@@ -25,7 +25,7 @@
     "gulp-postcss": "7.0.1",
     "gulp-rename": "1.4.0",
     "gulp-sass": "4.0.1",
-    "gulp-sourcemap": "1.0.1",
+    "gulp-sourcemaps": "2.6.4",
     "gulp-svgstore": "6.1.1",
     "stylelint": "9.4.x",
     "stylelint-config-htmlacademy": "0.1.x",

@@ -1,7 +1,19 @@
-import {SCREENS} from "./constants/main";
+import arrows from './components/arrows';
+import {render, getScreen} from './utils/main';
+import {store} from './store';
 
-const container = document.querySelector(`#main`);
-const screens = SCREENS.map((screenName) => document.querySelector(`#${screenName}`));
+document.body.appendChild(arrows);
 
-console.log('container', container);
-console.log('screens', screens);
+render(0);
+
+document.addEventListener(`keydown`, (event) => {
+  const {currentScreen} = store.getValues();
+
+  if (event.keyCode === 37) {
+    getScreen(currentScreen - 1);
+  }
+
+  if (event.keyCode === 39) {
+    getScreen(currentScreen + 1);
+  }
+});
