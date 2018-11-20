@@ -20,11 +20,10 @@ export const renderScreen = (screenName, containerSelector) => {
 
 export const renderHeader = (screenName) => {
   const headerElements = HEADER.map((element) => {
-    const {component, listeners, thereIsInSections} = element;
+    const {component, thereIsInSections} = element;
 
     return {
       component,
-      listeners,
       available: thereIsInSections.indexOf(screenName) !== -1
     };
   });
@@ -38,15 +37,7 @@ export const renderHeader = (screenName) => {
     let isHeader;
 
     headerElements.forEach((element) => {
-      const {component, listeners, available} = element;
-
-      if (available && listeners !== undefined) {
-        const events = Object.keys(listeners);
-
-        events.forEach((event) => {
-          component.addEventListener(`${event}`, listeners[event]);
-        });
-      }
+      const {component, available} = element;
 
       if (available) {
         isHeader = true;
@@ -66,7 +57,7 @@ export const renderHeader = (screenName) => {
 
   if (Object.prototype.toString.call(header) === `[object HTMLElement]`) {
     headerElements.forEach((element) => {
-      const {component, listeners, available} = element;
+      const {component, available} = element;
 
       if (header.contains(component) && !available) {
         header.removeChild(component);
@@ -75,14 +66,6 @@ export const renderHeader = (screenName) => {
       }
 
       if (!header.contains(component) && available) {
-        if (listeners !== undefined) {
-          const events = Object.keys(listeners);
-
-          events.forEach((event) => {
-            component.addEventListener(`${event}`, listeners[event]);
-          });
-        }
-
         header.appendChild(component);
       }
     });

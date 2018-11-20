@@ -6,7 +6,7 @@ import Game2 from '../components/game-2';
 import Game3 from '../components/game-3';
 import Stats from '../components/stats';
 
-import {Arrow, arrowListeners, Timer, Lives} from '../components/header/index';
+import {Arrow, Timer, Lives} from '../components/header/index';
 
 export const SCREENS = {
   intro: {id: 1, component: Intro, className: `intro`},
@@ -19,7 +19,7 @@ export const SCREENS = {
 };
 
 export const HEADER = [
-  {component: Arrow, listeners: arrowListeners, thereIsInSections: [`rules`, `game1`, `game2`, `game3`, `stats`]},
+  {component: Arrow, thereIsInSections: [`rules`, `game1`, `game2`, `game3`, `stats`]},
   {component: Timer, thereIsInSections: [`game1`, `game2`, `game3`]},
   {component: Lives, thereIsInSections: [`game1`, `game2`, `game3`]}
 ];

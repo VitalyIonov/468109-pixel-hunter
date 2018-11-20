@@ -1,10 +1,6 @@
 import {createElementFromTemplate} from '../../utils/main';
 import {pubSub} from '../../pubSub';
 
-const arrowListeners = {
-  click: () => pubSub.publish(`changeScreen`, `greeting`)
-};
-
 const template = `
   <span class="visually-hidden">Вернуться к началу</span>
   <svg class="icon" width="45" height="45" viewBox="0 0 45 45" fill="#000000">
@@ -21,7 +17,6 @@ const Arrow = createElementFromTemplate({
   elements: template
 });
 
-export {
-  Arrow,
-  arrowListeners
-};
+Arrow.addEventListener(`click`, () => pubSub.publish(`changeScreen`, `greeting`));
+
+export default Arrow;
