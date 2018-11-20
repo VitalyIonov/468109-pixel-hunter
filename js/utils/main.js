@@ -1,43 +1,61 @@
-import {SCREENS} from "../constants/main";
-import {store} from '../store';
-
 const container = document.querySelector(`#main`);
-const screens = SCREENS.map((screenName) => document.querySelector(`#${screenName}`).innerHTML);
 
-store.setValues({
-  screensCount: screens.length
-});
-
-export const render = (screenNumber) => {
-  container.innerHTML = screens[screenNumber];
+export const render = (element) => {
+  container.innerHTML = ``;
+  container.appendChild(element);
 };
 
-export const getScreen = (screenNumber) => {
-  const {screensCount} = store.getValues();
+const getElement = (nodeOptions) => {
+  const {node, className, elements} = nodeOptions;
 
-  if (screenNumber >= screensCount) {
-    const nextScreen = 0;
+  const wrapper = document.createElement(`${node}`);
 
-    store.setValues({
-      currentScreen: nextScreen
-    });
-
-    return render(nextScreen);
+  if (className !== undefined) {
+    wrapper.className = `${className}`;
   }
 
-  if (screenNumber < 0) {
-    const nextScreen = screensCount - 1;
-
-    store.setValues({
-      currentScreen: nextScreen
-    });
-
-    return render(nextScreen);
+  if (typeof elements === `string`) {
+    wrapper.innerHTML = elements;
   }
 
-  store.setValues({
-    currentScreen: screenNumber
+  if (Array.isArray(elements)) {
+    elements.forEach((element) => {
+      const {elem, listeners} = element;
+      const clone = elem.cloneNode(true);
+
+      if (listeners !== undefined && typeof listeners === `object`) {
+        const events = Object.keys(listeners);
+
+        events.forEach((event) => {
+          clone.addEventListener(`${event}`, listeners[event]);
+        });
+      }
+
+      wrapper.appendChild(clone);
+    });
+  }
+
+  return wrapper;
+};
+
+export const createElementFromTemplate = (nodesOptions) => {
+  if (typeof nodesOptions === `object` && !Array.isArray(nodesOptions)) {
+    return getElement(nodesOptions);
+  }
+
+  const wrapper = document.createElement(`div`);
+
+  nodesOptions.forEach((nodeOptions) => {
+    const element = getElement(nodeOptions);
+
+    wrapper.appendChild(element);
   });
 
-  return render(screenNumber);
+  return wrapper;
+};
+
+export const validate = (form, fields) => {
+  const {elements} = form;
+
+  return fields.every((field) => elements[field].value !== ``);
 };
