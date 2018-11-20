@@ -1,4 +1,3 @@
-import {Arrow, arrowListeners} from './header/index';
 import {createElementFromTemplate} from '../utils/main';
 
 const template = `
@@ -102,17 +101,10 @@ const template = `
   </table>
 `;
 
-const Stats = createElementFromTemplate([
-  {
-    node: `header`,
-    className: `header`,
-    elements: [{elem: Arrow, listeners: arrowListeners}]
-  },
-  {
-    node: `section`,
-    className: `result`,
-    elements: template
-  }
-]);
+const Stats = createElementFromTemplate({
+  node: `section`,
+  className: `result`,
+  elements: template
+});
 
 export default Stats;

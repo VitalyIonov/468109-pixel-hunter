@@ -1,6 +1,5 @@
-import Greeting from './greeting';
-
-import {createElementFromTemplate, render} from '../utils/main';
+import {createElementFromTemplate} from '../utils/main';
+import {pubSub} from '../pubSub';
 
 const template = `
   <button class="intro__asterisk asterisk" type="button"><span class="visually-hidden">Продолжить</span>*</button>
@@ -16,7 +15,7 @@ const Intro = createElementFromTemplate({
 const star = Intro.querySelector(`.intro__asterisk`);
 
 star.addEventListener(`click`, () => {
-  render(Greeting);
+  pubSub.publish(`changeScreen`, `greeting`);
 });
 
 export default Intro;

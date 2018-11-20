@@ -1,5 +1,5 @@
-import Rules from './rules';
-import {createElementFromTemplate, render} from '../utils/main';
+import {createElementFromTemplate} from '../utils/main';
+import {pubSub} from '../pubSub';
 
 const template = `
   <img class="greeting__logo" src="img/logo_ph-big.svg" width="201" height="89" alt="Pixel Hunter">
@@ -31,7 +31,7 @@ const Greeting = createElementFromTemplate({
 const button = Greeting.querySelector(`.greeting__continue`);
 
 button.addEventListener(`click`, () => {
-  render(Rules);
+  pubSub.publish(`changeScreen`, `rules`);
 });
 
 export default Greeting;

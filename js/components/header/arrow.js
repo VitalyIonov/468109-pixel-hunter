@@ -1,8 +1,8 @@
-import Greeting from '../greeting';
-import {createElementFromTemplate, render} from '../../utils/main';
+import {createElementFromTemplate} from '../../utils/main';
+import {pubSub} from '../../pubSub';
 
 const arrowListeners = {
-  click: () => render(Greeting)
+  click: () => pubSub.publish(`changeScreen`, `greeting`)
 };
 
 const template = `

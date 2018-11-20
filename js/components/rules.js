@@ -1,6 +1,5 @@
-import {Arrow, arrowListeners} from './header/index';
-import Game1 from './game-1';
-import {createElementFromTemplate, render} from '../utils/main';
+import {createElementFromTemplate} from '../utils/main';
+import {pubSub} from '../pubSub';
 
 const template = `
   <h2 class="rules__title">Правила</h2>
@@ -19,28 +18,15 @@ const template = `
   </form>
 `;
 
-const Rules = createElementFromTemplate([
-  {
-    node: `header`,
-    className: `header`,
-    elements: [{elem: Arrow, listeners: arrowListeners}]
-  },
-  {
-    node: `section`,
-    className: `rules`,
-    elements: template
-  }
-]);
+const Rules = createElementFromTemplate({
+  node: `section`,
+  className: `rules`,
+  elements: template
+});
 
 const form = Rules.querySelector(`.rules__form`);
 const input = Rules.querySelector(`.rules__input`);
 const submitButton = Rules.querySelector(`.rules__button`);
-
-form.addEventListener(`submit`, (event) => {
-  event.preventDefault();
-
-  render(Game1);
-});
 
 input.addEventListener(`input`, (event) => {
   if (event.target.value === ``) {
@@ -50,6 +36,12 @@ input.addEventListener(`input`, (event) => {
   }
 
   submitButton.removeAttribute(`disabled`);
+});
+
+form.addEventListener(`submit`, (event) => {
+  event.preventDefault();
+
+  pubSub.publish(`changeScreen`, `game1`);
 });
 
 export default Rules;

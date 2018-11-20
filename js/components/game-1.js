@@ -1,6 +1,5 @@
-import {Arrow, arrowListeners, Timer, Lives} from './header/index';
-import Game2 from './game-2';
-import {createElementFromTemplate, validate, render} from '../utils/main';
+import {createElementFromTemplate, validate} from '../utils/main';
+import {pubSub} from '../pubSub';
 
 const template = `
   <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
@@ -42,27 +41,15 @@ const template = `
   </ul>
 `;
 
-const Game1 = createElementFromTemplate([
-  {
-    node: `header`,
-    className: `header`,
-    elements:
-      [
-        {elem: Arrow, listeners: arrowListeners},
-        {elem: Timer},
-        {elem: Lives}
-      ]
-  },
-  {
-    node: `section`,
-    className: `game`,
-    elements: template
-  }
-]);
+const Game1 = createElementFromTemplate({
+  node: `section`,
+  className: `game`,
+  elements: template
+});
 
 const form = Game1.querySelector(`.game__content`);
 
 form.addEventListener(`change`, () =>
-  validate(form, [`question1`, `question2`]) && render(Game2));
+  validate(form, [`question1`, `question2`]) && pubSub.publish(`changeScreen`, `game2`));
 
 export default Game1;
