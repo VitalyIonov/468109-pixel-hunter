@@ -30,7 +30,7 @@ export const renderHeader = (screenName) => {
 
   let header = document.querySelector(`.header`);
 
-  if (header == undefined) {
+  if (header === null) {
     header = document.createElement(`header`);
     header.className = `header`;
 
