@@ -1,43 +1,19 @@
-import {SCREENS} from "../constants/main";
-import {store} from '../store';
+export const createElementFromTemplate = (nodeOptions) => {
+  const {node, className, elements} = nodeOptions;
 
-const container = document.querySelector(`#main`);
-const screens = SCREENS.map((screenName) => document.querySelector(`#${screenName}`).innerHTML);
+  const wrapper = document.createElement(`${node}`);
 
-store.setValues({
-  screensCount: screens.length
-});
+  if (className !== undefined) {
+    wrapper.className = `${className}`;
+  }
 
-export const render = (screenNumber) => {
-  container.innerHTML = screens[screenNumber];
+  wrapper.innerHTML = elements;
+
+  return wrapper;
 };
 
-export const getScreen = (screenNumber) => {
-  const {screensCount} = store.getValues();
+export const validate = (form, fields) => {
+  const {elements} = form;
 
-  if (screenNumber >= screensCount) {
-    const nextScreen = 0;
-
-    store.setValues({
-      currentScreen: nextScreen
-    });
-
-    return render(nextScreen);
-  }
-
-  if (screenNumber < 0) {
-    const nextScreen = screensCount - 1;
-
-    store.setValues({
-      currentScreen: nextScreen
-    });
-
-    return render(nextScreen);
-  }
-
-  store.setValues({
-    currentScreen: screenNumber
-  });
-
-  return render(screenNumber);
+  return fields.every((field) => elements[field].value !== ``);
 };

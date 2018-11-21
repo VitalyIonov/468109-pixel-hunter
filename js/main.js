@@ -1,19 +1,18 @@
-import arrows from './components/arrows';
-import {render, getScreen} from './utils/main';
-import {store} from './store';
+import {changeScreen, renderScreen, renderHeader} from './utils/render';
+import store from './store';
+import {pubSub} from './pubSub';
 
-document.body.appendChild(arrows);
+const container = document.querySelector(`#main`);
 
-render(0);
+const section = document.createElement(`section`);
 
-document.addEventListener(`keydown`, (event) => {
-  const {currentScreen} = store.getValues();
+section.id = `screen`;
 
-  if (event.keyCode === 37) {
-    getScreen(currentScreen - 1);
-  }
+container.appendChild(section);
 
-  if (event.keyCode === 39) {
-    getScreen(currentScreen + 1);
-  }
-});
+const initialScreen = store.getValues(`currentScreen`);
+
+renderHeader(initialScreen);
+renderScreen(initialScreen, `#screen`);
+
+pubSub.subscribe(`changeScreen`, changeScreen);

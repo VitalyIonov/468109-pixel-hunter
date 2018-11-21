@@ -1,9 +1,8 @@
 let values = {
-  screensCount: 0,
-  currentScreen: 0
+  currentScreen: `intro`
 };
 
-export const store = {
+const store = {
   setValues(newValues) {
     values = {
       ...values,
@@ -15,3 +14,5 @@ export const store = {
     return key ? values[key] : values;
   }
 };
+
+export default store;
