@@ -1,5 +1,6 @@
 import {createElementFromTemplate, validate} from '../utils/main';
 import {pubSub} from '../pubSub';
+import store from '../store';
 
 const template = `
   <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
@@ -49,7 +50,13 @@ const Game1 = createElementFromTemplate({
 
 const form = Game1.querySelector(`.game__content`);
 
-form.addEventListener(`change`, () =>
-  validate(form, [`question1`, `question2`]) && pubSub.publish(`changeScreen`, `game2`));
+form.addEventListener(`change`, () => {
+  if (validate(form, [`question1`, `question2`])) {
+
+    pubSub.publish(`changeScreen`, `game2`);
+    store.dispatch(`answer`, {answer: {isCorrect: false, elapsedTime: 23}}); // для теста
+    store.dispatch(`endGame`); // для теста
+  }
+});
 
 export default Game1;

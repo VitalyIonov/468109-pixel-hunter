@@ -38,7 +38,8 @@ const Game2 = createElementFromTemplate({
 
 const form = Game2.querySelector(`.game__content`);
 
-form.addEventListener(`change`, () =>
-  validate(form, [`question1`]) && pubSub.publish(`changeScreen`, `game3`));
+form.addEventListener(`change`, () => {
+  return validate(form, [`question1`]) && pubSub.publish(`changeScreen`, `game3`);
+});
 
 export default Game2;
