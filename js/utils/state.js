@@ -42,3 +42,22 @@ export const pointsCounter = (answers = [], lives) => {
 
   return 0;
 };
+
+export const livesCounter = (lastAnswer, lives) => {
+  if (typeof lastAnswer === `object` && lastAnswer.isCorrect !== undefined && typeof lives === `number`) {
+    const updatedLives = lives > LIVE_COUNT ? LIVE_COUNT : lives;
+    const {isCorrect} = lastAnswer;
+
+    if (updatedLives > 0 && isCorrect) {
+      return updatedLives;
+    }
+
+    if (updatedLives > 0 && !isCorrect) {
+      return updatedLives - 1;
+    }
+
+    return 0;
+  }
+
+  return 0;
+};
