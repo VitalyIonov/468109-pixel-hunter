@@ -1,13 +1,12 @@
 import {pubSub} from './pubSub';
+import { ROUND_TIME } from './constants/initialOptions';
 
 let values = {
   currentScreen: `intro`,
   answers: [],
-  lastAnswer: {
-    isCorrect: false,
-    elapsedTime: 30
-  },
   lives: 1,
+  elapsedTime: 0,
+  remainedTime: ROUND_TIME,
   isEndGame: false
 };
 

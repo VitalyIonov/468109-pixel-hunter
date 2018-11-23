@@ -5,7 +5,8 @@ import {
   LIVE_POINTS,
   IS_FAST_ANSWER_ELAPSED_TIME,
   IS_SLOW_ANSWER_ELAPSED_TIME,
-  LIVE_COUNT
+  LIVE_COUNT,
+  ROUND_TIME
 } from '../constants/initialOptions';
 
 export const pointsCounter = (answers = [], lives) => {
@@ -57,6 +58,36 @@ export const livesCounter = (lastAnswer, lives) => {
     }
 
     return 0;
+  }
+
+  return 0;
+};
+
+export const getNextScreen = (answers, lives, currentScreen) => {
+  if (typeof lives === `number` || Array.isArray(answers)) {
+    if (lives <= 0 || answers.length >= 10) {
+      return `stats`;
+    }
+  }
+
+  if (typeof currentScreen !== `string`) {
+    return `rules`;
+  }
+
+  return currentScreen;
+};
+
+export const getElapsedTime = (elapsedTime) => {
+  if (typeof elapsedTime === `number`) {
+    if (elapsedTime >= ROUND_TIME) {
+      return ROUND_TIME;
+    }
+
+    if (elapsedTime < 0) {
+      return 0;
+    }
+
+    return elapsedTime + 1;
   }
 
   return 0;
