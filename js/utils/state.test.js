@@ -50,23 +50,22 @@ describe(`livesCounter`, () => {
 describe(`getNextScreen`, () => {
 
   it(`should correctly return next screen with correct data got`, () => {
-    assert.equal(getNextScreen(new Array(10).fill({isCorrect: true, elapsedTime: 5}), 3, `game3`), `stats`);
-    assert.equal(getNextScreen(new Array(10).fill({isCorrect: true, elapsedTime: 5}), 0, `game3`), `stats`);
-    assert.equal(getNextScreen(new Array(6).fill({isCorrect: true, elapsedTime: 5}), 2, `game2`), `game2`);
-    assert.equal(getNextScreen(new Array(3).fill({isCorrect: true, elapsedTime: 5}), 0, `game1`), `stats`);
+    assert.equal(getNextScreen(true, `rules`), `stats`);
+    assert.equal(getNextScreen(true, `intro`), `stats`);
+    assert.equal(getNextScreen(false, `stats`), `stats`);
+    assert.equal(getNextScreen(false, `game1`), `game1`);
   });
 
   it(`should correctly return next screen with incorrect data got`, () => {
-    assert.equal(getNextScreen(new Array(6).fill({isCorrect: true, elapsedTime: 5}), -3, `game2`), `stats`);
-    assert.equal(getNextScreen(new Array(20).fill({isCorrect: true, elapsedTime: 5}), 18, `game3`), `stats`);
+    assert.equal(getNextScreen(true, `game6`), `stats`);
+    assert.equal(getNextScreen(false, `game5`), `greeting`);
   });
 
   it(`should correctly return next screen with corner cases`, () => {
-    assert.equal(getNextScreen([], 3, `game2`), `game2`);
-    assert.equal(getNextScreen(undefined, 0, `game2`), `stats`);
-    assert.equal(getNextScreen(undefined, undefined, `game1`), `game1`);
-    assert.equal(getNextScreen(undefined, ``, `game1`), `game1`);
-    assert.equal(getNextScreen(undefined, ``, undefined), `rules`);
+    assert.equal(getNextScreen([], `game1`), `greeting`);
+    assert.equal(getNextScreen(undefined, `game1`), `greeting`);
+    assert.equal(getNextScreen(undefined, undefined), `greeting`);
+    assert.equal(getNextScreen(undefined, ``), `greeting`);
   });
 });
 

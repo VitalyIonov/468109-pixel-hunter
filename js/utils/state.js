@@ -9,6 +9,8 @@ import {
   ROUND_TIME
 } from '../constants/initialOptions';
 
+import {SCREENS} from '../constants/main';
+
 export const pointsCounter = (answers = [], lives) => {
   if (
     Array.isArray(answers) &&
@@ -119,12 +121,12 @@ export const livesCounter = (lastAnswer, lives) => {
 };
 
 export const getNextScreen = (isEndGame, currentScreen) => {
-  if (isEndGame) {
+  if (typeof isEndGame === `boolean` && isEndGame) {
     return `stats`;
   }
 
-  if (typeof currentScreen !== `string`) {
-    return `rules`;
+  if (typeof isEndGame !== `boolean` || typeof currentScreen !== `string` || !SCREENS[currentScreen]) {
+    return `greeting`;
   }
 
   return currentScreen;
