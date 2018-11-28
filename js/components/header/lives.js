@@ -1,15 +1,23 @@
-import {createElementFromTemplate} from '../../utils/main';
+import store from '../../store';
+import {render} from '../../utils/render';
+import {LIVE_COUNT} from '../../constants/initialOptions';
 
-const template = `
-  <img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">
-  <img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">
-  <img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">
-`;
+const Lives = ({lives}) => {
+  const content = `
+    ${new Array(LIVE_COUNT - lives)
+    .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+    .join(` `)}
+    ${new Array(lives)
+    .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
+    .join(` `)}
+  `;
 
-const Lives = createElementFromTemplate({
-  node: `div`,
-  className: `game__lives`,
-  elements: template
-});
+  return render({
+    nodeName: `section`,
+    id: `lives`,
+    className: `game__lives`,
+    template: content
+  });
+};
 
-export default Lives;
+export default store.connect(Lives, [`lives`]);

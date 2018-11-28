@@ -1,21 +1,26 @@
-import {changeScreen, renderScreen, renderHeader} from './utils/render';
-import {onAnswer, onEndGame} from './utils/events';
-import store from './store';
-import {pubSub} from './pubSub';
+import header from './components/header/index';
+import content from './components/content/index';
+
+import {render} from './utils/render';
+import {changeScreen, changeTimer, onAnswer, nextStage} from './actions';
+import store, {initialValues} from './store';
+
+store.initialize(initialValues);
+
+const app = () => {
+  return render({
+    nodeName: `section`,
+    id: `app`,
+    className: `app`,
+    elements: [header, content]
+  });
+};
 
 const container = document.querySelector(`#main`);
 
-const section = document.createElement(`section`);
+container.appendChild(app());
 
-section.id = `screen`;
-
-container.appendChild(section);
-
-const {currentScreen} = store.getValues([`currentScreen`]);
-
-renderHeader(currentScreen);
-renderScreen(currentScreen, `#screen`);
-
-pubSub.subscribe(`changeScreen`, changeScreen);
-pubSub.subscribe(`answer`, onAnswer); // для теста
-pubSub.subscribe(`endGame`, onEndGame); // для теста
+store.bindAction(`changeScreen`, changeScreen);
+store.bindAction(`changeTimer`, changeTimer);
+store.bindAction(`newAnswer`, onAnswer);
+store.bindAction(`nextStage`, nextStage);

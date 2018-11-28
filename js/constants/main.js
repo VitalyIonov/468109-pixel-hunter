@@ -1,21 +1,23 @@
-import Intro from '../components/intro';
-import Greeting from '../components/greeting';
-import Rules from '../components/rules';
-import Game1 from '../components/game-1';
-import Game2 from '../components/game-2';
-import Game3 from '../components/game-3';
-import Stats from '../components/stats';
+import Intro from '../components/content/intro';
+import Greeting from '../components/content/greeting';
+import Rules from '../components/content/rules';
+import Game1 from '../components/content/game-1';
+// import Game2 from '../components/content/game-2';
+// import Game3 from '../components/content/game-3';
+import Stats from '../components/content/stats';
 
-import {Arrow, Timer, Lives} from '../components/header/index';
+import Arrow from '../components/header/arrow';
+import Lives from '../components/header/lives';
+import Timer from '../components/header/timer';
 
 export const SCREENS = {
-  intro: {id: 1, component: Intro, className: `intro`},
-  greeting: {id: 2, component: Greeting, className: `greeting central--blur`},
-  rules: {id: 3, component: Rules, className: `rules`},
-  game1: {id: 4, component: Game1, className: `game`},
-  game2: {id: 5, component: Game2, className: `game`},
-  game3: {id: 6, component: Game3, className: `game`},
-  stats: {id: 7, component: Stats, className: `result`}
+  intro: Intro,
+  greeting: Greeting,
+  rules: Rules,
+  game1: Game1,
+  // game2: {component: Game2, className: `game`},
+  // game3: {component: Game3, className: `game`},
+  stats: Stats
 };
 
 export const HEADER = [
