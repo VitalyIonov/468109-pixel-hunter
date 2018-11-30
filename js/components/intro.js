@@ -1,5 +1,5 @@
-import {render} from '../../utils/render';
-import store from '../../store';
+import store from '../store';
+import {render} from '../utils/render';
 
 const listeners = [
   {

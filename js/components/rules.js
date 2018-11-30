@@ -1,5 +1,7 @@
-import store from '../../store';
-import {render} from '../../utils/render';
+import store from '../store';
+import {render} from '../utils/render';
+
+import Arrow from './arrow';
 
 const listeners = [
   {
@@ -53,10 +55,23 @@ const Rules = () => {
 
   return render({
     nodeName: `section`,
-    id: `rules`,
-    className: `rules`,
-    template: content,
-    listeners
+    id: `app-wrapper`,
+    className: `app-wrapper`,
+    elements: [
+      () => render({
+        nodeName: `header`,
+        id: `header`,
+        className: `header`,
+        elements: [Arrow]
+      }),
+      () => render({
+        nodeName: `section`,
+        id: `rules`,
+        className: `rules`,
+        template: content,
+        listeners
+      })
+    ],
   });
 };
 

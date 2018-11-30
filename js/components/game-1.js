@@ -1,9 +1,13 @@
-import {answersIsGiven, isCorrectAnswer} from '../../utils/main';
-import {render} from '../../utils/render';
-import {QUESTIONS} from '../../constants/questions';
-import store from '../../store';
+import {answersIsGiven, isCorrectAnswer} from '../utils/main';
+import {QUESTIONS} from '../constants/questions';
+import store from '../store';
 import marks from './marks';
 import questionBlock from './questionBlock';
+import {render} from '../utils/render';
+
+import Arrow from './arrow';
+import Timer from './timer';
+import Lives from './lives';
 
 const listeners = [
   {
@@ -43,10 +47,23 @@ const Game1 = ({answers, isEndGame}) => {
 
   return render({
     nodeName: `section`,
-    id: `game1`,
-    className: `game`,
-    template: content,
-    listeners
+    id: `app-wrapper`,
+    className: `app-wrapper`,
+    elements: [
+      () => render({
+        nodeName: `header`,
+        id: `header`,
+        className: `header`,
+        elements: [Arrow, Timer, Lives]
+      }),
+      () => render({
+        nodeName: `section`,
+        id: `game1`,
+        className: `game`,
+        template: content,
+        listeners
+      })
+    ],
   });
 };
 

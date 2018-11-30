@@ -1,6 +1,6 @@
-import store from '../../store';
-import {render} from '../../utils/render';
-import {LIVE_COUNT} from '../../constants/initialOptions';
+import store from '../store';
+import {LIVE_COUNT} from '../constants/initialOptions';
+import {render} from '../utils/render';
 
 const Lives = ({lives}) => {
   const content = `

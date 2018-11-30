@@ -1,5 +1,5 @@
-import {render} from '../../utils/render';
-import store from '../../store';
+import {render} from '../utils/render';
+import store from '../store';
 import marks from './marks';
 
 import {
@@ -7,7 +7,9 @@ import {
   FAST_ANSWER_POINTS,
   SLOW_ANSWER_POINTS,
   LIVE_POINTS,
-} from '../../constants/initialOptions';
+} from '../constants/initialOptions';
+
+import Arrow from './arrow';
 
 const Stats = ({gameResults, answers}) => {
   const content = gameResults.map((result, index) => {
@@ -54,9 +56,22 @@ const Stats = ({gameResults, answers}) => {
 
   return render({
     nodeName: `section`,
-    id: `stats`,
-    className: `result`,
-    template: content
+    id: `app-wrapper`,
+    className: `app-wrapper`,
+    elements: [
+      () => render({
+        nodeName: `header`,
+        id: `header`,
+        className: `header`,
+        elements: [Arrow]
+      }),
+      () => render({
+        nodeName: `section`,
+        id: `stats`,
+        className: `result`,
+        template: content
+      })
+    ],
   });
 };
 

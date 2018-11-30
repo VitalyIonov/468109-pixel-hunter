@@ -7,7 +7,6 @@ export const initialValues = {
   elapsedTime: 0,
   remainedTime: ROUND_TIME,
   timerState: `stopped`,
-  timerId: undefined,
   isEndGame: false,
   nameIsEntered: false,
   gameResults: []

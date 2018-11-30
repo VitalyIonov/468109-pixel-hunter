@@ -1,6 +1,6 @@
-import store from '../../store';
-import {render} from '../../utils/render';
-import {ROUND_TIME} from '../../constants/initialOptions';
+import store from '../store';
+import {ROUND_TIME} from '../constants/initialOptions';
+import {render} from '../utils/render';
 
 const Timer = ({elapsedTime, timerId, timerState}) => {
   let interval;

@@ -1,4 +1,4 @@
-import {getMarkModifier} from "../../utils/main";
+import {getMarkModifier} from "../utils/main";
 
 const marks = (answers) => {
   return `
