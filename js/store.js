@@ -1,4 +1,4 @@
-import { ROUND_TIME } from './constants/initialOptions';
+import {ROUND_TIME} from './constants/initialOptions';
 
 export const initialValues = {
   currentScreen: `intro`,
@@ -6,9 +6,9 @@ export const initialValues = {
   lives: 3,
   elapsedTime: 0,
   remainedTime: ROUND_TIME,
-  isTimerStarted: false,
+  timerState: `stopped`,
+  timerId: undefined,
   isEndGame: false,
-  isStartGame: false,
   nameIsEntered: false,
   gameResults: []
 };
@@ -45,7 +45,7 @@ const store = {
           return {
             ...result,
             [key]: values[key]
-          }
+          };
         }
 
         return result;
@@ -53,12 +53,12 @@ const store = {
       values;
   },
 
-  initialize(values) {
-    this.setValues(values)
+  initialize(data) {
+    this.setValues(data);
   },
 
   reset() {
-    this.setValues(initialValues)
+    this.setValues(initialValues);
   },
 
   bindAction(channelName, action) {

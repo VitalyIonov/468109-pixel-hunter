@@ -1,5 +1,3 @@
-import store from './store';
-
 import {getElapsedTime, getNextScreen, livesCounter, checkEndGame, getGameResult} from './utils/state';
 
 export const changeScreen = ({store, newScreen}) => {
@@ -10,15 +8,14 @@ export const changeScreen = ({store, newScreen}) => {
   if (newScreen === `game1`) {
     updatedValues = {
       ...updatedValues,
-      isStartGame: true
-    }
+      timerState: `runs`
+    };
   }
 
   if (newScreen === `stats`) {
     updatedValues = {
       ...updatedValues,
-      isStartGame: false
-    }
+    };
   }
 
   store.setValues(updatedValues);
@@ -29,6 +26,13 @@ export const changeTimer = ({store}) => {
 
   store.setValues({
     elapsedTime: getElapsedTime(elapsedTime)
+  });
+};
+
+export const resetTimer = ({store}) => {
+  store.setValues({
+    elapsedTime: 0,
+    timerState: `stopped`
   });
 };
 
@@ -55,10 +59,9 @@ export const onAnswer = ({store, answer}) => {
 
   const isEndGame = checkEndGame(newAnswers, newLives);
 
-  const additionalValues = !isEndGame ? {} :
+  const additionalValues = !isEndGame ? {timerState: `runs`} :
     {
       isTimerStarted: false,
-      gameIsStarted: false,
       gameResults: isEndGame ? [...gameResults, getGameResult(newAnswers, newLives)] : gameResults,
       isEndGame
     };
@@ -66,7 +69,6 @@ export const onAnswer = ({store, answer}) => {
   store.setValues({
     answers: newAnswers,
     lives: newLives,
-    elapsedTime: 0,
     ...additionalValues
   });
 };

@@ -2,7 +2,7 @@ import header from './components/header/index';
 import content from './components/content/index';
 
 import {render} from './utils/render';
-import {changeScreen, changeTimer, onAnswer, nextStage} from './actions';
+import {changeScreen, changeTimer, onAnswer, nextStage, resetTimer} from './actions';
 import store, {initialValues} from './store';
 
 store.initialize(initialValues);
@@ -22,5 +22,6 @@ container.appendChild(app());
 
 store.bindAction(`changeScreen`, changeScreen);
 store.bindAction(`changeTimer`, changeTimer);
+store.bindAction(`resetTimer`, resetTimer);
 store.bindAction(`newAnswer`, onAnswer);
 store.bindAction(`nextStage`, nextStage);

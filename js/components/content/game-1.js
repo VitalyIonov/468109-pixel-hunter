@@ -15,6 +15,7 @@ const listeners = [
       if (answersIsGiven(form, [`question1`, `question2`])) {
         const isCorrect = isCorrectAnswer(form, [`question1`, `question2`]);
 
+        store.dispatch(`resetTimer`);
         store.dispatch(`newAnswer`, {answer: {isCorrect}});
         store.dispatch(`nextStage`);
         store.dispatch(`nextStage`);
