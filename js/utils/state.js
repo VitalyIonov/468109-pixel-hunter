@@ -75,6 +75,14 @@ export const livesCounter = (lastAnswer, lives) => {
 };
 
 export const getNextScreen = (isEndGame, currentScreen, answers) => {
+  if ((typeof isEndGame === `boolean` && isEndGame) || answers.length >= 10) {
+    return `stats`;
+  }
+
+  if (typeof isEndGame !== `boolean` || typeof currentScreen !== `string`) {
+    return `greeting`;
+  }
+
   if (answers.length === 4) {
     return `game2`;
   }
@@ -83,13 +91,6 @@ export const getNextScreen = (isEndGame, currentScreen, answers) => {
     return `game3`;
   }
 
-  if (typeof isEndGame === `boolean` && isEndGame) {
-    return `stats`;
-  }
-
-  if (typeof isEndGame !== `boolean` || typeof currentScreen !== `string`) {
-    return `greeting`;
-  }
 
   return currentScreen;
 };
