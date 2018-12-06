@@ -1,11 +1,11 @@
-import {ROUND_TIME} from './constants/initialOptions';
+import {TIME} from './constants/initialOptions';
 
 export const initialValues = {
   currentScreen: `intro`,
   answers: [],
   lives: 3,
   elapsedTime: 0,
-  remainedTime: ROUND_TIME,
+  remainedTime: TIME.ROUND,
   timerState: `stopped`,
   isEndGame: false,
   nameIsEntered: false,

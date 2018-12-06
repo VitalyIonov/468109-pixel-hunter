@@ -37,9 +37,9 @@ export const resetTimer = ({store}) => {
 };
 
 export const nextStage = ({store}) => {
-  const {isEndGame, currentScreen} = store.getValues();
+  const {isEndGame, currentScreen, answers} = store.getValues();
 
-  const newScreen = getNextScreen(isEndGame, currentScreen);
+  const newScreen = getNextScreen(isEndGame, currentScreen, answers);
 
   store.setValues({
     currentScreen: newScreen
@@ -61,7 +61,6 @@ export const onAnswer = ({store, answer}) => {
 
   const additionalValues = !isEndGame ? {timerState: `runs`} :
     {
-      isTimerStarted: false,
       gameResults: isEndGame ? [...gameResults, getGameResult(newAnswers, newLives)] : gameResults,
       isEndGame
     };

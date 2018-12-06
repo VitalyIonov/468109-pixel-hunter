@@ -2,20 +2,25 @@ import {render} from '../utils/render';
 import store from '../store';
 import marks from './marks';
 
-import {
-  TRUE_ANSWER_POINTS,
-  FAST_ANSWER_POINTS,
-  SLOW_ANSWER_POINTS,
-  LIVE_POINTS,
-} from '../constants/initialOptions';
+import {POINTS} from '../constants/initialOptions';
 
+import AbstractView from '../abstract-view';
 import Arrow from './arrow';
 
-const Stats = ({gameResults, answers}) => {
-  const content = gameResults.map((result, index) => {
-    const {correct, fast, slow, livesResult, totalPoints, isWin} = result;
+class Stats extends AbstractView {
+  constructor(state) {
+    super();
 
-    return `
+    this.state = state;
+  }
+
+  get template() {
+    const {gameResults, answers} = this.state;
+
+    return gameResults.map((result, index) => {
+      const {correct, fast, slow, livesResult, totalPoints, isWin} = result;
+
+      return `
       <h2 class="result__title">${isWin ? `Победа!` : `Поражение`}</h2>
       <table class="result__table">
         <tr>
@@ -23,28 +28,28 @@ const Stats = ({gameResults, answers}) => {
           <td colspan="2">
             ${marks(answers)}
           </td>
-          <td class="result__points">× ${TRUE_ANSWER_POINTS}</td>
+          <td class="result__points">× ${POINTS.TRUE}</td>
           <td class="result__total">${correct.points}</td>
         </tr>
         <tr>
           <td></td>
           <td class="result__extra">Бонус за скорость:</td>
           <td class="result__extra">${fast.count} <span class="stats__result stats__result--fast"></span></td>
-          <td class="result__points">× ${FAST_ANSWER_POINTS}</td>
+          <td class="result__points">× ${POINTS.FAST}</td>
           <td class="result__total">${fast.points}</td>
         </tr>
         <tr>
           <td></td>
           <td class="result__extra">Бонус за жизни:</td>
           <td class="result__extra">${livesResult.count} <span class="stats__result stats__result--alive"></span></td>
-          <td class="result__points">× ${LIVE_POINTS}</td>
+          <td class="result__points">× ${POINTS.LIVE}</td>
           <td class="result__total">${livesResult.points}</td>
         </tr>
         <tr>
           <td></td>
           <td class="result__extra">Штраф за медлительность:</td>
           <td class="result__extra">${slow.count} <span class="stats__result stats__result--slow"></span></td>
-          <td class="result__points">× ${SLOW_ANSWER_POINTS}</td>
+          <td class="result__points">× ${POINTS.SLOW}</td>
           <td class="result__total">${slow.points}</td>
         </tr>
         <tr>
@@ -52,9 +57,14 @@ const Stats = ({gameResults, answers}) => {
         </tr>
       </table>
     `;
-  }).join(``);
+    }).join(``);
+  }
+}
 
-  return render({
+export default store.connect((...args) => {
+  const view = new Stats(...args);
+
+  view.render({
     nodeName: `section`,
     id: `app-wrapper`,
     className: `app-wrapper`,
@@ -69,10 +79,11 @@ const Stats = ({gameResults, answers}) => {
         nodeName: `section`,
         id: `stats`,
         className: `result`,
-        template: content
+        template: view.template
       })
     ],
+    isRerender: args.length !== 0
   });
-};
 
-export default store.connect(Stats, [`gameResults`, `answers`]);
+  return view.element;
+}, [`gameResults`, `answers`]);

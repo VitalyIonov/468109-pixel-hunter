@@ -1,8 +1,14 @@
-export const TRUE_ANSWER_POINTS = 100;
-export const FAST_ANSWER_POINTS = 50;
-export const SLOW_ANSWER_POINTS = -50;
-export const LIVE_POINTS = 50;
+export const POINTS = {
+  TRUE: 100,
+  FAST: 50,
+  SLOW: -50,
+  LIVE: 50
+};
+
 export const LIVE_COUNT = 3;
-export const ROUND_TIME = 30;
-export const IS_FAST_ANSWER_ELAPSED_TIME = 10;
-export const IS_SLOW_ANSWER_ELAPSED_TIME = 20;
+
+export const TIME = {
+  ROUND: 30,
+  IS_FAST: 10,
+  IS_SLOW: 20
+};

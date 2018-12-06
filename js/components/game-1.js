@@ -2,50 +2,60 @@ import {answersIsGiven, isCorrectAnswer} from '../utils/main';
 import {QUESTIONS} from '../constants/questions';
 import store from '../store';
 import marks from './marks';
-import questionBlock from './questionBlock';
+import questionBlock from './question-block';
 import {render} from '../utils/render';
 
+import AbstractView from '../abstract-view';
 import Arrow from './arrow';
 import Timer from './timer';
 import Lives from './lives';
 
-const listeners = [
-  {
-    targetSelector: `.game__content`,
-    type: `change`,
-    callback: () => {
-      const form = document.querySelector(`.game__content`);
+class Game1 extends AbstractView {
+  constructor(state) {
+    super();
 
-      if (answersIsGiven(form, [`question1`, `question2`])) {
-        const isCorrect = isCorrectAnswer(form, [`question1`, `question2`]);
+    this.state = state;
+  }
 
-        store.dispatch(`resetTimer`);
-        store.dispatch(`newAnswer`, {answer: {isCorrect}});
-        store.dispatch(`nextStage`);
-        store.dispatch(`nextStage`);
-      }
+  get template() {
+    const {answers} = this.state;
+
+    const question = QUESTIONS[answers.length];
+
+    return `
+      <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
+      <form class="game__content">
+        ${question && questionBlock(question)}
+      </form>
+       ${marks(answers)}
+    `;
+  }
+
+  bind(element) {
+    const form = element.querySelector(`.game__content`);
+
+    form.addEventListener(`change`, this.onSelectAnswer(form));
+  }
+
+  onSelectAnswer() {
+    throw new Error(`onSelectAnswer is not defined`);
+  }
+}
+
+export default store.connect((...args) => {
+  const view = new Game1(...args);
+
+  view.onSelectAnswer = (form) => () => {
+    if (answersIsGiven(form, [`question1`, `question2`])) {
+      const isCorrect = isCorrectAnswer(form, [`question1`, `question2`]);
+
+      store.dispatch(`resetTimer`);
+      store.dispatch(`newAnswer`, {answer: {isCorrect}});
+      store.dispatch(`nextStage`);
     }
-  }
-];
+  };
 
-const Game1 = ({answers, isEndGame}) => {
-  if (isEndGame) {
-    return null;
-  }
-
-  const question = QUESTIONS[answers.length];
-
-  const keys = Object.keys(question);
-
-  const content = `
-    <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
-    <form class="game__content">
-      ${questionBlock(question, keys)}
-    </form>
-     ${marks(answers)}
-  `;
-
-  return render({
+  view.render({
     nodeName: `section`,
     id: `app-wrapper`,
     className: `app-wrapper`,
@@ -60,11 +70,11 @@ const Game1 = ({answers, isEndGame}) => {
         nodeName: `section`,
         id: `game1`,
         className: `game`,
-        template: content,
-        listeners
+        template: view.template
       })
     ],
+    isRerender: args.length !== 0
   });
-};
 
-export default store.connect(Game1, [`answers`, `isEndGame`]);
+  return view.element;
+}, [`answers`]);

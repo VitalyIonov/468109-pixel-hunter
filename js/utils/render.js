@@ -1,5 +1,5 @@
 export const render = (nodeOptions) => {
-  const {nodeName, id, className, template, elements, listeners} = nodeOptions;
+  const {nodeName, id, className, template, elements, isRerender} = nodeOptions;
 
   let container = document.querySelector(`#${id}`);
 
@@ -13,6 +13,20 @@ export const render = (nodeOptions) => {
     if (id !== undefined) {
       container.id = `${id}`;
     }
+
+    if (template !== undefined) {
+      container.innerHTML = template;
+    }
+
+    if (elements !== undefined) {
+      elements.forEach((element) => container.appendChild(element()));
+    }
+
+    return container;
+  }
+
+  if (!isRerender) {
+    return container;
   }
 
   container.innerHTML = ``;
@@ -23,18 +37,6 @@ export const render = (nodeOptions) => {
 
   if (elements !== undefined) {
     elements.forEach((element) => container.appendChild(element()));
-  }
-
-  if (listeners !== undefined) {
-    listeners.forEach((listener) => {
-      const {targetSelector, type, callback} = listener;
-
-      const targetNode = targetSelector !== undefined ?
-        container.querySelector(`${targetSelector}`) :
-        container;
-
-      targetNode.addEventListener(`${type}`, callback);
-    });
   }
 
   return container;

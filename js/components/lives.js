@@ -1,23 +1,39 @@
 import store from '../store';
 import {LIVE_COUNT} from '../constants/initialOptions';
-import {render} from '../utils/render';
 
-const Lives = ({lives}) => {
-  const content = `
-    ${new Array(LIVE_COUNT - lives)
-    .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
-    .join(` `)}
-    ${new Array(lives)
-    .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
-    .join(` `)}
-  `;
+import AbstractView from '../abstract-view';
 
-  return render({
+class Lives extends AbstractView {
+  constructor(state) {
+    super();
+
+    this.state = state;
+  }
+
+  get template() {
+    const {lives} = this.state;
+
+    return `
+      ${new Array(LIVE_COUNT - lives)
+      .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+      .join(` `)}
+      ${new Array(lives)
+      .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
+    .join(` `)}
+    `;
+  }
+}
+
+export default store.connect((...args) => {
+  const view = new Lives(...args);
+
+  view.render({
     nodeName: `section`,
     id: `lives`,
     className: `game__lives`,
-    template: content
+    template: view.template,
+    isRerender: args.length !== 0
   });
-};
 
-export default store.connect(Lives, [`lives`]);
+  return view.element;
+}, [`lives`]);

@@ -1,42 +1,70 @@
 import store from '../store';
-import {ROUND_TIME} from '../constants/initialOptions';
-import {render} from '../utils/render';
+import {TIME} from '../constants/initialOptions';
 
-const Timer = ({elapsedTime, timerId, timerState}) => {
-  let interval;
+import AbstractView from '../abstract-view';
 
-  if (timerState === `runs`) {
-    interval = setInterval(() => {
-      store.dispatch(`changeTimer`);
+class Timer extends AbstractView {
+  constructor(state) {
+    super();
 
-    }, 1000);
-
-    store.setValues({
-      timerState: `runned`,
-      timerId: interval
-    });
+    this.state = state;
   }
 
-  if (timerState === `stopped`) {
-    clearInterval(timerId);
+  get template() {
+    const {elapsedTime} = this.state;
+
+    return `
+      ${TIME.ROUND - elapsedTime}
+    `;
   }
 
-  if (elapsedTime >= ROUND_TIME) {
-    store.dispatch(`resetTimer`);
-    store.dispatch(`newAnswer`, {answer: {isCorrect: false}});
-    store.dispatch(`nextStage`);
+  render(nodeOptions) {
+    super.render(nodeOptions);
+
+    const {elapsedTime, timerState, timerId} = this.state;
+
+    this.onTimerStep(elapsedTime, timerState, timerId);
   }
 
-  const content = `
-    ${ROUND_TIME - elapsedTime}
-  `;
+  onTimerStep() {
+    throw new Error(`onTimerStep is not defined`);
+  }
+}
 
-  return render({
+export default store.connect((...args) => {
+  const view = new Timer(...args);
+
+  view.onTimerStep = (elapsedTime, timerState, timerId) => {
+    if (timerState === `runs`) {
+      const interval = setInterval(() => {
+        store.dispatch(`changeTimer`);
+
+      }, 1000);
+
+      store.setValues({
+        timerState: `runned`,
+        timerId: interval
+      });
+    }
+
+    if (timerState === `stopped`) {
+      clearInterval(timerId);
+    }
+
+    if (elapsedTime >= TIME.ROUND) {
+      store.dispatch(`resetTimer`);
+      store.dispatch(`newAnswer`, {answer: {isCorrect: false}});
+      store.dispatch(`nextStage`);
+    }
+  };
+
+  view.render({
     nodeName: `section`,
     id: `timer`,
     className: `game__timer`,
-    template: content
+    template: view.template,
+    isRerender: args.length !== 0
   });
-};
 
-export default store.connect(Timer, [`elapsedTime`, `timerId`, `timerState`]);
+  return view.element;
+}, [`elapsedTime`, `timerId`, `timerState`]);

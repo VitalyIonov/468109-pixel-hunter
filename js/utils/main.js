@@ -1,18 +1,4 @@
-import {IS_FAST_ANSWER_ELAPSED_TIME, IS_SLOW_ANSWER_ELAPSED_TIME} from "../constants/initialOptions";
-
-export const createElementFromTemplate = (nodeOptions) => {
-  const {node, className, elements} = nodeOptions;
-
-  const wrapper = document.createElement(`${node}`);
-
-  if (className !== undefined) {
-    wrapper.className = `${className}`;
-  }
-
-  wrapper.innerHTML = elements;
-
-  return wrapper;
-};
+import {TIME} from "../constants/initialOptions";
 
 export const answersIsGiven = (form, fields) => {
   const {elements} = form;
@@ -31,11 +17,11 @@ export const getMarkModifier = (isCorrect, elapsedTime) => {
     return `wrong`;
   }
 
-  if (elapsedTime < IS_FAST_ANSWER_ELAPSED_TIME) {
+  if (elapsedTime < TIME.IS_FAST) {
     return `fast`;
   }
 
-  if (elapsedTime >= IS_SLOW_ANSWER_ELAPSED_TIME) {
+  if (elapsedTime >= TIME.IS_SLOW) {
     return `slow`;
   }
 

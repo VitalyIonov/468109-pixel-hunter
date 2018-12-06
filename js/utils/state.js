@@ -1,48 +1,4 @@
-import {
-  TRUE_ANSWER_POINTS,
-  FAST_ANSWER_POINTS,
-  SLOW_ANSWER_POINTS,
-  LIVE_POINTS,
-  IS_FAST_ANSWER_ELAPSED_TIME,
-  IS_SLOW_ANSWER_ELAPSED_TIME,
-  LIVE_COUNT,
-  ROUND_TIME
-} from '../constants/initialOptions';
-
-export const pointsCounter = (answers = [], lives) => {
-  if (
-    Array.isArray(answers) &&
-    answers.length === 10 &&
-    lives > 0 &&
-    lives <= LIVE_COUNT
-  ) {
-    const pointsFromAnswers = answers.reduce((result, answer) => {
-      const {isCorrect, elapsedTime} = answer;
-
-      let points = 0;
-
-      if (isCorrect) {
-        points += TRUE_ANSWER_POINTS;
-      }
-
-      if (elapsedTime < IS_FAST_ANSWER_ELAPSED_TIME) {
-        points += FAST_ANSWER_POINTS;
-      }
-
-      if (elapsedTime >= IS_SLOW_ANSWER_ELAPSED_TIME) {
-        points += SLOW_ANSWER_POINTS;
-      }
-
-      return result + points;
-    }, 0);
-
-    const pointsFromLives = lives * LIVE_POINTS;
-
-    return pointsFromAnswers + pointsFromLives;
-  }
-
-  return 0;
-};
+import {POINTS, LIVE_COUNT, TIME} from '../constants/initialOptions';
 
 export const getGameResult = (answers, lives) => {
   const resultFromAnswers = answers.reduce((result, answer) => {
@@ -52,17 +8,17 @@ export const getGameResult = (answers, lives) => {
 
     if (isCorrect) {
       newResult.correct.count += 1;
-      newResult.correct.points += TRUE_ANSWER_POINTS;
+      newResult.correct.points += POINTS.TRUE;
     }
 
-    if (isCorrect && elapsedTime < IS_FAST_ANSWER_ELAPSED_TIME) {
+    if (isCorrect && elapsedTime < TIME.IS_FAST) {
       newResult.fast.count += 1;
-      newResult.fast.points += FAST_ANSWER_POINTS;
+      newResult.fast.points += POINTS.FAST;
     }
 
-    if (isCorrect && elapsedTime >= IS_SLOW_ANSWER_ELAPSED_TIME) {
+    if (isCorrect && elapsedTime >= TIME.IS_SLOW) {
       newResult.slow.count += 1;
-      newResult.slow.points += SLOW_ANSWER_POINTS;
+      newResult.slow.points += POINTS.SLOW;
     }
 
     return newResult;
@@ -84,7 +40,7 @@ export const getGameResult = (answers, lives) => {
   const resultFromLives = {
     livesResult: {
       count: lives,
-      points: lives * LIVE_POINTS
+      points: lives * POINTS.LIVE
     }
   };
 
@@ -118,7 +74,15 @@ export const livesCounter = (lastAnswer, lives) => {
   return 0;
 };
 
-export const getNextScreen = (isEndGame, currentScreen) => {
+export const getNextScreen = (isEndGame, currentScreen, answers) => {
+  if (answers.length === 4) {
+    return `game2`;
+  }
+
+  if (answers.length === 7) {
+    return `game3`;
+  }
+
   if (typeof isEndGame === `boolean` && isEndGame) {
     return `stats`;
   }
@@ -140,8 +104,8 @@ export const checkEndGame = (answers, lives) => {
 
 export const getElapsedTime = (elapsedTime) => {
   if (typeof elapsedTime === `number`) {
-    if (elapsedTime >= ROUND_TIME) {
-      return ROUND_TIME;
+    if (elapsedTime >= TIME.ROUND) {
+      return TIME.ROUND;
     }
 
     if (elapsedTime < 0) {
