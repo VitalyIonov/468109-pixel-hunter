@@ -1,110 +1,89 @@
-import {createElementFromTemplate} from '../utils/main';
+import {render} from '../utils/render';
+import store from '../store';
+import marks from './marks';
 
-const template = `
-  <h2 class="result__title">Победа!</h2>
-  <table class="result__table">
-    <tr>
-      <td class="result__number">1.</td>
-      <td colspan="2">
-        <ul class="stats">
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--correct"></li>
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--unknown"></li>
-        </ul>
-      </td>
-      <td class="result__points">× 100</td>
-      <td class="result__total">900</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="result__extra">Бонус за скорость:</td>
-      <td class="result__extra">1 <span class="stats__result stats__result--fast"></span></td>
-      <td class="result__points">× 50</td>
-      <td class="result__total">50</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="result__extra">Бонус за жизни:</td>
-      <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
-      <td class="result__points">× 50</td>
-      <td class="result__total">100</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="result__extra">Штраф за медлительность:</td>
-      <td class="result__extra">2 <span class="stats__result stats__result--slow"></span></td>
-      <td class="result__points">× 50</td>
-      <td class="result__total">-100</td>
-    </tr>
-    <tr>
-      <td colspan="5" class="result__total  result__total--final">950</td>
-    </tr>
-  </table>
-  <table class="result__table">
-    <tr>
-      <td class="result__number">2.</td>
-      <td>
-        <ul class="stats">
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--correct"></li>
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--wrong"></li>
-        </ul>
-      </td>
-      <td class="result__total"></td>
-      <td class="result__total  result__total--final">fail</td>
-    </tr>
-  </table>
-  <table class="result__table">
-    <tr>
-      <td class="result__number">3.</td>
-      <td colspan="2">
-        <ul class="stats">
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--correct"></li>
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--unknown"></li>
-        </ul>
-      </td>
-      <td class="result__points">× 100</td>
-      <td class="result__total">900</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="result__extra">Бонус за жизни:</td>
-      <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
-      <td class="result__points">× 50</td>
-      <td class="result__total">100</td>
-    </tr>
-    <tr>
-      <td colspan="5" class="result__total  result__total--final">950</td>
-    </tr>
-  </table>
-`;
+import {POINTS} from '../constants/initialOptions';
 
-const Stats = createElementFromTemplate({
-  node: `section`,
-  className: `result`,
-  elements: template
-});
+import AbstractView from '../abstract-view';
+import Arrow from './arrow';
 
-export default Stats;
+class Stats extends AbstractView {
+  constructor(state) {
+    super();
+
+    this.state = state;
+  }
+
+  get template() {
+    const {gameResults, answers} = this.state;
+
+    return gameResults.map((result, index) => {
+      const {correct, fast, slow, livesResult, totalPoints, isWin} = result;
+
+      return `
+      <h2 class="result__title">${isWin ? `Победа!` : `Поражение`}</h2>
+      <table class="result__table">
+        <tr>
+          <td class="result__number">${index + 1}.</td>
+          <td colspan="2">
+            ${marks(answers)}
+          </td>
+          <td class="result__points">× ${POINTS.TRUE}</td>
+          <td class="result__total">${correct.points}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="result__extra">Бонус за скорость:</td>
+          <td class="result__extra">${fast.count} <span class="stats__result stats__result--fast"></span></td>
+          <td class="result__points">× ${POINTS.FAST}</td>
+          <td class="result__total">${fast.points}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="result__extra">Бонус за жизни:</td>
+          <td class="result__extra">${livesResult.count} <span class="stats__result stats__result--alive"></span></td>
+          <td class="result__points">× ${POINTS.LIVE}</td>
+          <td class="result__total">${livesResult.points}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="result__extra">Штраф за медлительность:</td>
+          <td class="result__extra">${slow.count} <span class="stats__result stats__result--slow"></span></td>
+          <td class="result__points">× ${POINTS.SLOW}</td>
+          <td class="result__total">${slow.points}</td>
+        </tr>
+        <tr>
+          <td colspan="5" class="result__total  result__total--final">${totalPoints}</td>
+        </tr>
+      </table>
+    `;
+    }).join(``);
+  }
+}
+
+export default store.connect((...args) => {
+  const view = new Stats(...args);
+
+  view.render({
+    nodeName: `section`,
+    id: `app-wrapper`,
+    className: `app-wrapper`,
+    elements: [
+      () => render({
+        nodeName: `header`,
+        id: `header`,
+        className: `header`,
+        elements: [Arrow]
+      }),
+      () => render({
+        nodeName: `section`,
+        id: `stats`,
+        className: `result`,
+        template: view.template
+      })
+    ],
+    isRerender: args.length !== 0
+  });
+
+  return view.element;
+}, [`gameResults`, `answers`]);

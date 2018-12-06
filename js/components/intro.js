@@ -1,21 +1,40 @@
-import {createElementFromTemplate} from '../utils/main';
-import {pubSub} from '../pubSub';
+import store from '../store';
 
-const template = `
-  <button class="intro__asterisk asterisk" type="button"><span class="visually-hidden">Продолжить</span>*</button>
-  <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
-`;
+import AbstractView from '../abstract-view';
 
-const Intro = createElementFromTemplate({
-  node: `section`,
-  className: `intro`,
-  elements: template
-});
+class Intro extends AbstractView {
+  get template() {
+    return `
+      <button class="intro__asterisk asterisk" type="button"><span class="visually-hidden">Продолжить</span>*</button>
+      <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
+    `;
+  }
 
-const star = Intro.querySelector(`.intro__asterisk`);
+  bind(element) {
+    const button = element.querySelector(`.intro__asterisk`);
 
-star.addEventListener(`click`, () => {
-  pubSub.publish(`changeScreen`, `greeting`);
-});
+    button.addEventListener(`click`, this.onClick);
+  }
 
-export default Intro;
+  onClick() {
+    throw new Error(`onClick is not defined`);
+  }
+}
+
+export default (...args) => {
+  const view = new Intro();
+
+  view.onClick = () => {
+    store.dispatch(`changeScreen`, {newScreen: `greeting`});
+  };
+
+  view.render({
+    nodeName: `section`,
+    id: `intro`,
+    className: `intro`,
+    template: view.template,
+    isRerender: args.length !== 0
+  });
+
+  return view.element;
+};

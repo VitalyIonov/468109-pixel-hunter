@@ -1,55 +1,80 @@
-import {createElementFromTemplate, validate} from '../utils/main';
-import {pubSub} from '../pubSub';
+import {answersIsGiven, isCorrectAnswer} from '../utils/main';
+import {QUESTIONS} from '../constants/questions';
+import store from '../store';
+import marks from './marks';
+import questionBlock from './question-block';
+import {render} from '../utils/render';
 
-const template = `
-  <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
-  <form class="game__content">
-    <div class="game__option">
-      <img src="http://placehold.it/468x458" alt="Option 1" width="468" height="458">
-      <label class="game__answer game__answer--photo">
-        <input class="visually-hidden" name="question1" type="radio" value="photo">
-        <span>Фото</span>
-      </label>
-      <label class="game__answer game__answer--paint">
-        <input class="visually-hidden" name="question1" type="radio" value="paint">
-        <span>Рисунок</span>
-      </label>
-    </div>
-    <div class="game__option">
-      <img src="http://placehold.it/468x458" alt="Option 2" width="468" height="458">
-      <label class="game__answer  game__answer--photo">
-        <input class="visually-hidden" name="question2" type="radio" value="photo">
-        <span>Фото</span>
-      </label>
-      <label class="game__answer  game__answer--paint">
-        <input class="visually-hidden" name="question2" type="radio" value="paint">
-        <span>Рисунок</span>
-      </label>
-    </div>
-  </form>
-  <ul class="stats">
-    <li class="stats__result stats__result--wrong"></li>
-    <li class="stats__result stats__result--slow"></li>
-    <li class="stats__result stats__result--fast"></li>
-    <li class="stats__result stats__result--correct"></li>
-    <li class="stats__result stats__result--unknown"></li>
-    <li class="stats__result stats__result--unknown"></li>
-    <li class="stats__result stats__result--unknown"></li>
-    <li class="stats__result stats__result--unknown"></li>
-    <li class="stats__result stats__result--unknown"></li>
-    <li class="stats__result stats__result--unknown"></li>
-  </ul>
-`;
+import AbstractView from '../abstract-view';
+import Arrow from './arrow';
+import Timer from './timer';
+import Lives from './lives';
 
-const Game1 = createElementFromTemplate({
-  node: `section`,
-  className: `game`,
-  elements: template
-});
+class Game1 extends AbstractView {
+  constructor(state) {
+    super();
 
-const form = Game1.querySelector(`.game__content`);
+    this.state = state;
+  }
 
-form.addEventListener(`change`, () =>
-  validate(form, [`question1`, `question2`]) && pubSub.publish(`changeScreen`, `game2`));
+  get template() {
+    const {answers} = this.state;
 
-export default Game1;
+    const question = QUESTIONS[answers.length];
+
+    return `
+      <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
+      <form class="game__content">
+        ${question && questionBlock(question)}
+      </form>
+       ${marks(answers)}
+    `;
+  }
+
+  bind(element) {
+    const form = element.querySelector(`.game__content`);
+
+    form.addEventListener(`change`, this.onSelectAnswer(form));
+  }
+
+  onSelectAnswer() {
+    throw new Error(`onSelectAnswer is not defined`);
+  }
+}
+
+export default store.connect((...args) => {
+  const view = new Game1(...args);
+
+  view.onSelectAnswer = (form) => () => {
+    if (answersIsGiven(form, [`question1`, `question2`])) {
+      const isCorrect = isCorrectAnswer(form, [`question1`, `question2`]);
+
+      store.dispatch(`resetTimer`);
+      store.dispatch(`newAnswer`, {answer: {isCorrect}});
+      store.dispatch(`nextStage`);
+    }
+  };
+
+  view.render({
+    nodeName: `section`,
+    id: `app-wrapper`,
+    className: `app-wrapper`,
+    elements: [
+      () => render({
+        nodeName: `header`,
+        id: `header`,
+        className: `header`,
+        elements: [Arrow, Timer, Lives]
+      }),
+      () => render({
+        nodeName: `section`,
+        id: `game1`,
+        className: `game`,
+        template: view.template
+      })
+    ],
+    isRerender: args.length !== 0
+  });
+
+  return view.element;
+}, [`answers`]);

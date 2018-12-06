@@ -1,18 +1,45 @@
-import {changeScreen, renderScreen, renderHeader} from './utils/render';
-import store from './store';
-import {pubSub} from './pubSub';
+import {render} from './utils/render';
+import {changeScreen, changeTimer, onAnswer, nextStage, resetTimer} from './actions';
+import store, {initialValues} from './store';
+
+import Intro from './components/intro';
+import Greeting from './components/greeting';
+import Rules from './components/rules';
+import Game1 from './components/game-1';
+import Game2 from './components/game-2';
+import Game3 from './components/game-3';
+import Stats from './components/stats';
+
+const screens = {
+  intro: Intro,
+  greeting: Greeting,
+  rules: Rules,
+  game1: Game1,
+  game2: Game2,
+  game3: Game3,
+  stats: Stats
+};
+
+store.initialize(initialValues);
+
+const App = ({currentScreen}) => {
+  return render({
+    nodeName: `section`,
+    id: `app`,
+    className: `central`,
+    elements: [screens[currentScreen]],
+    isRerender: true
+  });
+};
 
 const container = document.querySelector(`#main`);
 
-const section = document.createElement(`section`);
+const connectedApp = store.connect(App, [`currentScreen`]);
 
-section.id = `screen`;
+container.appendChild(connectedApp());
 
-container.appendChild(section);
-
-const initialScreen = store.getValues(`currentScreen`);
-
-renderHeader(initialScreen);
-renderScreen(initialScreen, `#screen`);
-
-pubSub.subscribe(`changeScreen`, changeScreen);
+store.bindAction(`changeScreen`, changeScreen);
+store.bindAction(`changeTimer`, changeTimer);
+store.bindAction(`resetTimer`, resetTimer);
+store.bindAction(`newAnswer`, onAnswer);
+store.bindAction(`nextStage`, nextStage);
