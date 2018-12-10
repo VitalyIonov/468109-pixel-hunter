@@ -1,4 +1,4 @@
-import {TIME} from "../constants/initialOptions";
+import {Time} from "../constants/initialOptions";
 
 export const answersIsGiven = (form, fields) => {
   const {elements} = form;
@@ -17,11 +17,11 @@ export const getMarkModifier = (isCorrect, elapsedTime) => {
     return `wrong`;
   }
 
-  if (elapsedTime < TIME.IS_FAST) {
+  if (elapsedTime < Time.IS_FAST) {
     return `fast`;
   }
 
-  if (elapsedTime >= TIME.IS_SLOW) {
+  if (elapsedTime >= Time.IS_SLOW) {
     return `slow`;
   }
 

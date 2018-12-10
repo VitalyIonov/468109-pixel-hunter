@@ -5,6 +5,16 @@
 @import "../variables/colors";
 @import "../mixins/text";
 
+@keyframes blink {
+  from {
+    color: $main-black-color;
+  }
+
+  to {
+    color: transparent;
+  }
+}
+
 .game {
   display: flex;
   flex-direction: column;
@@ -16,6 +26,12 @@
   @include bold-text;
   font-size: 60px;
   line-height: 45px;
+}
+
+.game__timer--blink {
+  animation-name: blink;
+  animation-duration: 0.4s;
+  animation-iteration-count: infinite;
 }
 
 .game__task {

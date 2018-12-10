@@ -1,4 +1,4 @@
-import {POINTS, LIVE_COUNT, TIME} from '../constants/initialOptions';
+import {Points, LIVE_COUNT, Time} from '../constants/initialOptions';
 
 export const getGameResult = (answers, lives) => {
   const resultFromAnswers = answers.reduce((result, answer) => {
@@ -8,17 +8,17 @@ export const getGameResult = (answers, lives) => {
 
     if (isCorrect) {
       newResult.correct.count += 1;
-      newResult.correct.points += POINTS.TRUE;
+      newResult.correct.points += Points.TRUE;
     }
 
-    if (isCorrect && elapsedTime < TIME.IS_FAST) {
+    if (isCorrect && elapsedTime < Time.IS_FAST) {
       newResult.fast.count += 1;
-      newResult.fast.points += POINTS.FAST;
+      newResult.fast.points += Points.FAST;
     }
 
-    if (isCorrect && elapsedTime >= TIME.IS_SLOW) {
+    if (isCorrect && elapsedTime >= Time.IS_SLOW) {
       newResult.slow.count += 1;
-      newResult.slow.points += POINTS.SLOW;
+      newResult.slow.points += Points.SLOW;
     }
 
     return newResult;
@@ -39,8 +39,8 @@ export const getGameResult = (answers, lives) => {
 
   const resultFromLives = {
     livesResult: {
-      count: lives,
-      points: lives * POINTS.LIVE
+      count: lives <= 0 ? 0 : lives,
+      points: lives <= 0 ? 0 : lives * Points.LIVE
     }
   };
 
@@ -51,7 +51,7 @@ export const getGameResult = (answers, lives) => {
     ...resultFromAnswers,
     ...resultFromLives,
     totalPoints: correct.points + fast.points + slow.points + livesResult.points,
-    isWin: answers.length === 10 && lives !== 0
+    isWin: answers.length === 10 && lives >= 0
   };
 };
 
@@ -60,18 +60,18 @@ export const livesCounter = (lastAnswer, lives) => {
     const updatedLives = lives > LIVE_COUNT ? LIVE_COUNT : lives;
     const {isCorrect} = lastAnswer;
 
-    if (updatedLives > 0 && isCorrect) {
+    if (updatedLives >= 0 && isCorrect) {
       return updatedLives;
     }
 
-    if (updatedLives > 0 && !isCorrect) {
+    if (updatedLives >= 0 && !isCorrect) {
       return updatedLives - 1;
     }
 
-    return 0;
+    return -1;
   }
 
-  return 0;
+  return -1;
 };
 
 export const getNextScreen = (isEndGame, currentScreen, answers) => {
@@ -97,7 +97,7 @@ export const getNextScreen = (isEndGame, currentScreen, answers) => {
 
 export const checkEndGame = (answers, lives) => {
   if (typeof lives === `number` || Array.isArray(answers)) {
-    return lives <= 0 || answers.length >= 10;
+    return lives < 0 || answers.length >= 10;
   }
 
   return false;
@@ -105,8 +105,8 @@ export const checkEndGame = (answers, lives) => {
 
 export const getElapsedTime = (elapsedTime) => {
   if (typeof elapsedTime === `number`) {
-    if (elapsedTime >= TIME.ROUND) {
-      return TIME.ROUND;
+    if (elapsedTime >= Time.ROUND) {
+      return Time.ROUND;
     }
 
     if (elapsedTime < 0) {
