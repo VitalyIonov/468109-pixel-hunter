@@ -2,7 +2,7 @@ import {render} from '../utils/render';
 import store from '../store';
 import marks from './marks';
 
-import {POINTS} from '../constants/initialOptions';
+import {Points} from '../constants/initialOptions';
 
 import AbstractView from '../abstract-view';
 import Arrow from './arrow';
@@ -28,28 +28,28 @@ class Stats extends AbstractView {
           <td colspan="2">
             ${marks(answers)}
           </td>
-          <td class="result__points">× ${POINTS.TRUE}</td>
+          <td class="result__points">× ${Points.TRUE}</td>
           <td class="result__total">${correct.points}</td>
         </tr>
         <tr>
           <td></td>
           <td class="result__extra">Бонус за скорость:</td>
           <td class="result__extra">${fast.count} <span class="stats__result stats__result--fast"></span></td>
-          <td class="result__points">× ${POINTS.FAST}</td>
+          <td class="result__points">× ${Points.FAST}</td>
           <td class="result__total">${fast.points}</td>
         </tr>
         <tr>
           <td></td>
           <td class="result__extra">Бонус за жизни:</td>
           <td class="result__extra">${livesResult.count} <span class="stats__result stats__result--alive"></span></td>
-          <td class="result__points">× ${POINTS.LIVE}</td>
+          <td class="result__points">× ${Points.LIVE}</td>
           <td class="result__total">${livesResult.points}</td>
         </tr>
         <tr>
           <td></td>
           <td class="result__extra">Штраф за медлительность:</td>
           <td class="result__extra">${slow.count} <span class="stats__result stats__result--slow"></span></td>
-          <td class="result__points">× ${POINTS.SLOW}</td>
+          <td class="result__points">× ${Points.SLOW}</td>
           <td class="result__total">${slow.points}</td>
         </tr>
         <tr>

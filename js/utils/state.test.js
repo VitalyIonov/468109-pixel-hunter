@@ -10,16 +10,16 @@ describe(`livesCounter`, () => {
   });
 
   it(`should correctly counting lives of the game with incorrect data got`, () => {
-    assert.equal(livesCounter({isCorrect: false, elapsedTime: 25}, 0), 0);
+    assert.equal(livesCounter({isCorrect: false, elapsedTime: 25}, 0), -1);
     assert.equal(livesCounter({isCorrect: true, elapsedTime: 25}, 5), 3);
     assert.equal(livesCounter({isCorrect: false, elapsedTime: 25}, 5), 2);
   });
 
   it(`should correctly counting lives of the game with corner cases`, () => {
-    assert.equal(livesCounter({}, 3), 0);
-    assert.equal(livesCounter(undefined, 2), 0);
-    assert.equal(livesCounter({isCorrect: false, elapsedTime: 25}, `string`), 0);
-    assert.equal(livesCounter(undefined, undefined), 0);
+    assert.equal(livesCounter({}, 3), -1);
+    assert.equal(livesCounter(undefined, 2), -1);
+    assert.equal(livesCounter({isCorrect: false, elapsedTime: 25}, `string`), -1);
+    assert.equal(livesCounter(undefined, undefined), -1);
   });
 });
 
