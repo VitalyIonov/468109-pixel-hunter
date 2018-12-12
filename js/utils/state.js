@@ -83,15 +83,6 @@ export const getNextScreen = (isEndGame, currentScreen, answers) => {
     return `greeting`;
   }
 
-  if (answers.length === 4) {
-    return `game2`;
-  }
-
-  if (answers.length === 7) {
-    return `game3`;
-  }
-
-
   return currentScreen;
 };
 

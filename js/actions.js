@@ -5,7 +5,7 @@ export const changeScreen = ({store, newScreen}) => {
     currentScreen: newScreen
   };
 
-  if (newScreen === `game1`) {
+  if (newScreen === `game`) {
     updatedValues = {
       ...updatedValues,
       timerState: `runs`

@@ -62,7 +62,7 @@ export default (...args) => {
 
     submitButton.setAttribute(`disabled`, ``);
 
-    store.dispatch(`changeScreen`, {newScreen: `game1`});
+    store.dispatch(`changeScreen`, {newScreen: `game`});
   };
 
   view.render({
