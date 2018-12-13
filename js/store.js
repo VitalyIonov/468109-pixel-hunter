@@ -1,7 +1,7 @@
 import {Time} from './constants/initialOptions';
 
 export const initialValues = {
-  currentScreen: `intro`,
+  currentScreen: `splash`,
   answers: [],
   lives: 3,
   elapsedTime: 0,
@@ -9,7 +9,9 @@ export const initialValues = {
   timerState: `stopped`,
   isEndGame: false,
   nameIsEntered: false,
-  gameResults: []
+  gameResults: [],
+  questions: [],
+  error: ``
 };
 
 let values = {};
@@ -56,8 +58,12 @@ const store = {
     this.setValues(data);
   },
 
-  reset() {
-    this.setValues(initialValues);
+  reset(initialData) {
+    if (initialData) {
+      this.setValues(initialData);
+    } else {
+      this.setValues(initialValues);
+    }
   },
 
   bindAction(channelName, action) {
