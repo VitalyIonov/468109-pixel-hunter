@@ -1,6 +1,6 @@
 import store from '../store';
 
-import {checkStatus} from '../utils/main';
+import {checkStatus, formatQuestionsToClient} from '../utils/main';
 
 import AbstractView from '../abstract-view';
 
@@ -45,7 +45,7 @@ export default (...args) => {
     .then((response) => response.json())
     .then((data) => {
       store.setValues({
-        questions: data
+        questions: formatQuestionsToClient(data)
       });
 
       store.dispatch(`changeScreen`, {newScreen: `greeting`});

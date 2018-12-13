@@ -2,8 +2,8 @@ import {render} from './utils/render';
 import {changeScreen, changeTimer, onAnswer, nextStage, resetTimer} from './actions';
 import store, {initialValues} from './store';
 
-import SplashScreen from './components/splash-screen';
-import ErrorScreen from './components/error-screen';
+import SplashScreen from './components/splash';
+import ErrorScreen from './components/error';
 import Intro from './components/intro';
 import Greeting from './components/greeting';
 import Rules from './components/rules';

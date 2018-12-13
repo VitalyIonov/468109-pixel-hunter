@@ -8,7 +8,7 @@ import Arrow from './arrow';
 import Timer from './timer';
 import Lives from './lives';
 
-import {QuestionType, AnswerType} from '../constants/main';
+import {QuestionType} from '../constants/main';
 import {checkIsAllAnswersAreGiven, checkIsCorrectAnswer, getGameScreenModifyer} from '../utils/main';
 
 class Game extends AbstractView {
@@ -62,14 +62,7 @@ export default store.connect((...args) => {
 
     if (type === QuestionType.ONE_OF_THREE) {
       isAllAnswersAreGiven = !!event.target.dataset.value;
-
-      if (question === `Найдите фото среди изображений`) {
-        isCorrect = event.target.dataset.value === AnswerType.PHOTO;
-      }
-
-      if (question === `Найдите рисунок среди изображений`) {
-        isCorrect = event.target.dataset.value === AnswerType.PAINTING;
-      }
+      isCorrect = event.target.dataset.value === question.correctAnswer;
     }
 
     if (type !== QuestionType.ONE_OF_THREE) {

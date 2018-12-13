@@ -48,3 +48,37 @@ export const checkStatus = (response) => {
     throw new Error(`${response.status}: ${response.statusText}`);
   }
 };
+
+const getCorrectAnswer = (answers) => {
+  const answerChoises = new Set();
+  const dublicateAnswerChoises = new Set();
+
+  answers.forEach((answer) => {
+    if (!answerChoises.has(answer.type)) {
+      answerChoises.add(answer.type);
+
+      return;
+    }
+
+    if (answerChoises.has(answer.type)) {
+      dublicateAnswerChoises.add(answer.type);
+    }
+  });
+
+  dublicateAnswerChoises.forEach((dublicateChoise) => answerChoises.delete(dublicateChoise));
+
+  return Array.from(answerChoises).toString();
+};
+
+export const formatQuestionsToClient = (questions) => {
+  return questions.map((question) => {
+    if (question.type === QuestionType.ONE_OF_THREE) {
+      return {
+        ...question,
+        correctAnswer: getCorrectAnswer(question.answers)
+      };
+    }
+
+    return question;
+  });
+};
