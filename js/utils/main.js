@@ -50,24 +50,24 @@ export const checkStatus = (response) => {
 };
 
 const getCorrectAnswer = (answers) => {
-  const answerChoises = new Set();
-  const dublicateAnswerChoises = new Set();
+  const answerChoices = new Set();
+  const duplicateAnswerChoices = new Set();
 
   answers.forEach((answer) => {
-    if (!answerChoises.has(answer.type)) {
-      answerChoises.add(answer.type);
+    if (!answerChoices.has(answer.type)) {
+      answerChoices.add(answer.type);
 
       return;
     }
 
-    if (answerChoises.has(answer.type)) {
-      dublicateAnswerChoises.add(answer.type);
+    if (answerChoices.has(answer.type)) {
+      duplicateAnswerChoices.add(answer.type);
     }
   });
 
-  dublicateAnswerChoises.forEach((dublicateChoise) => answerChoises.delete(dublicateChoise));
+  duplicateAnswerChoices.forEach((duplicateChoice) => answerChoices.delete(duplicateChoice));
 
-  return Array.from(answerChoises).toString();
+  return Array.from(answerChoices).toString();
 };
 
 export const formatQuestionsToClient = (questions) => {
