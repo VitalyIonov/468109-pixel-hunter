@@ -58,8 +58,12 @@ const store = {
     this.setValues(data);
   },
 
-  reset() {
-    this.setValues(initialValues);
+  reset(initialData) {
+    if (initialData) {
+      this.setValues(initialData);
+    } else {
+      this.setValues(initialValues);
+    }
   },
 
   bindAction(channelName, action) {

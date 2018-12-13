@@ -1,4 +1,4 @@
-import store from '../store';
+import store, {initialValues} from '../store';
 
 import AbstractView from '../abstract-view';
 
@@ -28,8 +28,13 @@ export default (...args) => {
   const view = new Arrow();
 
   view.onClick = () => {
-    store.reset();
-    store.dispatch(`changeScreen`, {newScreen: `greeting`});
+    const {questions} = store.getValues();
+
+    store.reset({
+      ...initialValues,
+      currentScreen: `greeting`,
+      questions
+    });
   };
 
   view.render({

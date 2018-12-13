@@ -56,11 +56,7 @@ const getCorrectAnswer = (answers) => {
   answers.forEach((answer) => {
     if (!answerChoices.has(answer.type)) {
       answerChoices.add(answer.type);
-
-      return;
-    }
-
-    if (answerChoices.has(answer.type)) {
+    } else {
       duplicateAnswerChoices.add(answer.type);
     }
   });

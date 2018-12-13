@@ -63,9 +63,7 @@ export default store.connect((...args) => {
     if (type === QuestionType.ONE_OF_THREE) {
       isAllAnswersAreGiven = !!event.target.dataset.value;
       isCorrect = event.target.dataset.value === question.correctAnswer;
-    }
-
-    if (type !== QuestionType.ONE_OF_THREE) {
+    } else {
       isAllAnswersAreGiven = checkIsAllAnswersAreGiven(form, answers);
       isCorrect = checkIsCorrectAnswer(form, answers);
     }
