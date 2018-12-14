@@ -4,6 +4,8 @@ import {render} from '../utils/render';
 import AbstractView from '../abstract-view';
 import Arrow from './arrow';
 
+import {getUserStatistics} from '../sources';
+
 class Rules extends AbstractView {
   get template() {
     return `
@@ -45,6 +47,10 @@ export default (...args) => {
   view.onInputChange = (element) => (event) => {
     const submitButton = element.querySelector(`.rules__button`);
 
+    store.setValues({
+      userName: event.target.value
+    });
+
     if (event.target.value === ``) {
       submitButton.setAttribute(`disabled`, ``);
 
@@ -57,6 +63,8 @@ export default (...args) => {
   view.onSubmit = (element) => (event) => {
     event.preventDefault();
     event.target.reset();
+
+    getUserStatistics();
 
     const submitButton = element.querySelector(`.rules__button`);
 

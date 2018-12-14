@@ -51,7 +51,8 @@ export const getGameResult = (answers, lives) => {
     ...resultFromAnswers,
     ...resultFromLives,
     totalPoints: correct.points + fast.points + slow.points + livesResult.points,
-    isWin: answers.length === 10 && lives >= 0
+    isWin: answers.length === 10 && lives >= 0,
+    answers
   };
 };
 

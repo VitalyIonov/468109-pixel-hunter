@@ -1,16 +1,16 @@
 import {Time} from "../constants/initialOptions";
-import {QuestionType} from '../constants/main';
+import {QuestionTypes} from '../constants/main';
 
 export const checkIsAllAnswersAreGiven = (form, answers) => answers.every((answer, index) => {
   const answerId = index + 1;
 
-  return form[`answer${answerId}`].value !== ``;
+  return form.elements[`answer${answerId}`].value !== ``;
 });
 
 export const checkIsCorrectAnswer = (form, answers) => answers.every((answer, index) => {
   const answerId = index + 1;
 
-  return answer.type === form[`answer${answerId}`].value;
+  return answer.type === form.elements[`answer${answerId}`].value;
 });
 
 export const getMarkModifier = (isCorrect, elapsedTime) => {
@@ -30,11 +30,11 @@ export const getMarkModifier = (isCorrect, elapsedTime) => {
 };
 
 export const getGameScreenModifyer = (question) => {
-  if (question && question.type === QuestionType.TINDER_LIKE) {
+  if (question && question.type === QuestionTypes.TINDER_LIKE) {
     return `game__content--wide`;
   }
 
-  if (question && question.type === QuestionType.ONE_OF_THREE) {
+  if (question && question.type === QuestionTypes.ONE_OF_THREE) {
     return `game__content--tripple`;
   }
 
@@ -68,7 +68,7 @@ const getCorrectAnswer = (answers) => {
 
 export const formatQuestionsToClient = (questions) => {
   return questions.map((question) => {
-    if (question.type === QuestionType.ONE_OF_THREE) {
+    if (question.type === QuestionTypes.ONE_OF_THREE) {
       return {
         ...question,
         correctAnswer: getCorrectAnswer(question.answers)

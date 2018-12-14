@@ -49,6 +49,8 @@ export default store.connect((...args) => {
 
     if (timerState === `stopped`) {
       clearInterval(timerId);
+
+      return;
     }
 
     if (Time.ROUND - elapsedTime <= 5) {
