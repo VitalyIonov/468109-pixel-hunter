@@ -17,9 +17,7 @@ class AbstractView {
     throw new Error(`Template is required`);
   }
 
-  bind() {
-
-  }
+  bind() {}
 
   render(nodeOptions) {
     if (this._element) {

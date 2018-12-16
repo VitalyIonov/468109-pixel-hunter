@@ -8,7 +8,7 @@ import Arrow from './arrow';
 import Timer from './timer';
 import Lives from './lives';
 
-import {QuestionType} from '../constants/main';
+import {QuestionTypes} from '../constants/main';
 import {checkIsAllAnswersAreGiven, checkIsCorrectAnswer, getGameScreenModifyer} from '../utils/main';
 
 class Game extends AbstractView {
@@ -37,11 +37,11 @@ class Game extends AbstractView {
   bind(element) {
     const form = element.querySelector(`.game__content`);
 
-    if (this.question && this.question.type !== QuestionType.ONE_OF_THREE) {
+    if (this.question && this.question.type !== QuestionTypes.ONE_OF_THREE) {
       form.addEventListener(`change`, this.onSelectAnswer(form));
     }
 
-    if (this.question && this.question.type === QuestionType.ONE_OF_THREE) {
+    if (this.question && this.question.type === QuestionTypes.ONE_OF_THREE) {
       form.addEventListener(`click`, this.onSelectAnswer(form));
     }
   }
@@ -55,22 +55,22 @@ export default store.connect((...args) => {
   const view = new Game(...args);
 
   view.onSelectAnswer = (form) => (event) => {
-    const {question, answers, type} = view.question;
+    const {answers, type, correctAnswer} = view.question;
 
     let isAllAnswersAreGiven;
     let isCorrect;
 
-    if (type === QuestionType.ONE_OF_THREE) {
+    if (type === QuestionTypes.ONE_OF_THREE) {
       isAllAnswersAreGiven = !!event.target.dataset.value;
-      isCorrect = event.target.dataset.value === question.correctAnswer;
+      isCorrect = event.target.dataset.value === correctAnswer;
     } else {
       isAllAnswersAreGiven = checkIsAllAnswersAreGiven(form, answers);
       isCorrect = checkIsCorrectAnswer(form, answers);
     }
 
     if (isAllAnswersAreGiven) {
-      store.dispatch(`newAnswer`, {answer: {isCorrect}});
       store.dispatch(`resetTimer`);
+      store.dispatch(`newAnswer`, {answer: {isCorrect}});
       store.dispatch(`nextStage`);
     }
   };

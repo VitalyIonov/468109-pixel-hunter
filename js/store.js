@@ -1,6 +1,7 @@
 import {Time} from './constants/initialOptions';
 
 export const initialValues = {
+  userName: ``,
   currentScreen: `splash`,
   answers: [],
   lives: 3,

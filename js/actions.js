@@ -1,4 +1,5 @@
 import {getElapsedTime, getNextScreen, livesCounter, checkEndGame, getGameResult} from './utils/state';
+import {sendGameResult} from './sources';
 
 export const changeScreen = ({store, newScreen}) => {
   let updatedValues = {
@@ -31,7 +32,6 @@ export const changeTimer = ({store}) => {
 
 export const resetTimer = ({store}) => {
   store.setValues({
-    elapsedTime: 0,
     timerState: `stopped`
   });
 };
@@ -47,7 +47,7 @@ export const nextStage = ({store}) => {
 };
 
 export const onAnswer = ({store, answer}) => {
-  const {lives, answers, elapsedTime, gameResults} = store.getValues();
+  const {lives, answers, elapsedTime, gameResults, userName} = store.getValues();
 
   const updatedAnswer = {
     ...answer,
@@ -58,16 +58,24 @@ export const onAnswer = ({store, answer}) => {
   const newAnswers = [...answers, updatedAnswer];
 
   const isEndGame = checkEndGame(newAnswers, newLives);
+  let newGameResult;
+
+  if (isEndGame) {
+    newGameResult = getGameResult(newAnswers, newLives);
+
+    sendGameResult(newGameResult, userName);
+  }
 
   const additionalValues = !isEndGame ? {timerState: `runs`} :
     {
-      gameResults: isEndGame ? [...gameResults, getGameResult(newAnswers, newLives)] : gameResults,
+      gameResults: [...gameResults, newGameResult],
       isEndGame
     };
 
   store.setValues({
     answers: newAnswers,
     lives: newLives,
+    elapsedTime: 0,
     ...additionalValues
   });
 };
