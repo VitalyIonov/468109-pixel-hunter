@@ -9,7 +9,7 @@ import Timer from './timer';
 import Lives from './lives';
 
 import {QuestionTypes} from '../constants/main';
-import {checkIsAllAnswersAreGiven, checkIsCorrectAnswer, getGameScreenModifyer} from '../utils/main';
+import {checkIsAllAnswersAreGiven, checkIsCorrectAnswer, getGameScreenModifyer, resizeImage} from '../utils/main';
 
 class Game extends AbstractView {
   constructor(state) {
@@ -44,6 +44,18 @@ class Game extends AbstractView {
     if (this.question && this.question.type === QuestionTypes.ONE_OF_THREE) {
       form.addEventListener(`click`, this.onSelectAnswer(form));
     }
+
+    const interval = setInterval(() => {
+      if (form.offsetWidth !== 0) {
+        this.resize(element);
+
+        clearInterval(interval);
+      }
+    }, 50);
+  }
+
+  resize() {
+    throw new Error(`resize is not defined`);
   }
 
   onSelectAnswer() {
@@ -73,6 +85,27 @@ export default store.connect((...args) => {
       store.dispatch(`newAnswer`, {answer: {isCorrect}});
       store.dispatch(`nextStage`);
     }
+  };
+
+  view.resize = (element) => {
+    const gameOptions = element.querySelectorAll(`.game__option`);
+
+    gameOptions.forEach((gameOption) => {
+      const gameOptionImage = gameOption.querySelector(`img`);
+      const gameOptionSize = {
+        width: gameOption.clientWidth,
+        height: gameOption.clientHeight
+      };
+      const imageSize = {
+        width: gameOptionImage.width,
+        height: gameOptionImage.height
+      };
+
+      const newImageSize = resizeImage(gameOptionSize, imageSize);
+
+      gameOptionImage.style.setProperty(`width`, `${newImageSize.width}px`);
+      gameOptionImage.style.setProperty(`height`, `${newImageSize.height}px`);
+    });
   };
 
   view.render({

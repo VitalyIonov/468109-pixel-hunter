@@ -78,3 +78,33 @@ export const formatQuestionsToClient = (questions) => {
     return question;
   });
 };
+
+export const resizeImage = (frameSize, imageSize) => {
+  const widthRatio = imageSize.width / frameSize.width;
+  const heightRatio = imageSize.height / frameSize.height;
+
+  if (widthRatio <= 1 && heightRatio <= 1) {
+    return imageSize;
+  }
+
+  if (widthRatio > 1 && heightRatio <= 1) {
+    return {
+      width: imageSize.width / widthRatio,
+      height: imageSize.height / widthRatio
+    };
+  }
+
+  if (widthRatio <= 1 && heightRatio > 1) {
+    return {
+      width: imageSize.width / heightRatio,
+      height: imageSize.height / heightRatio
+    };
+  }
+
+  const maxRatio = Math.max(widthRatio, heightRatio);
+
+  return {
+    width: imageSize.width / maxRatio,
+    height: imageSize.height / maxRatio
+  };
+};
