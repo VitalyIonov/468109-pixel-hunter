@@ -1,3 +1,5 @@
+import '@babel/polyfill';
+
 import {render} from './utils/render';
 import {changeScreen, changeTimer, onAnswer, nextStage, resetTimer} from './actions';
 import store, {initialValues} from './store';

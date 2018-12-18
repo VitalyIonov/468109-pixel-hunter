@@ -1,8 +1,6 @@
-import store from '../store';
-
-import {checkStatus, formatQuestionsToClient} from '../utils/main';
-
 import AbstractView from '../abstract-view';
+
+import {getQuestions} from '../sources';
 
 class SplashScreen extends AbstractView {
   constructor() {
@@ -40,24 +38,7 @@ export default (...args) => {
 
   view.start();
 
-  window.fetch(`https://es.dump.academy/pixel-hunter/questions`)
-    .then(checkStatus)
-    .then((response) => response.json())
-    .then((data) => {
-      store.setValues({
-        questions: formatQuestionsToClient(data)
-      });
-
-      store.dispatch(`changeScreen`, {newScreen: `greeting`});
-    })
-    .catch((error) => {
-      store.setValues({
-        error
-      });
-
-      store.dispatch(`changeScreen`, {newScreen: `error`});
-    })
-    .then(view.stop());
+  getQuestions().then(view.stop());
 
   return view.element;
 };

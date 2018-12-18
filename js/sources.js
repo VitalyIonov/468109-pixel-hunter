@@ -1,8 +1,28 @@
 import store from './store';
-import {checkStatus} from './utils/main';
+import {checkStatus, formatQuestionsToClient} from './utils/main';
 import {APP_ID, SERVER_URL} from './constants/main';
 
-export const sendGameResult = (newGameResult, userName) => {
+export const getQuestions = async () => {
+  try {
+    const response = await fetch(`https://es.dump.academy/pixel-hunter/questions`);
+    const checkedResponse = await checkStatus(response);
+    const responseData = await checkedResponse.json();
+
+    store.setValues({
+      questions: formatQuestionsToClient(responseData)
+    });
+
+    store.dispatch(`changeScreen`, {newScreen: `greeting`});
+  } catch (error) {
+    store.setValues({
+      error
+    });
+
+    store.dispatch(`changeScreen`, {newScreen: `error`});
+  }
+};
+
+export const sendGameResult = async (newGameResult, userName) => {
   const requestSettings = {
     body: JSON.stringify(newGameResult),
     headers: {
@@ -11,17 +31,18 @@ export const sendGameResult = (newGameResult, userName) => {
     method: `POST`
   };
 
-  window.fetch(`${SERVER_URL}/stats/${APP_ID}-${userName}`, requestSettings)
-    .then(checkStatus);
+  const response = await fetch(`${SERVER_URL}/stats/${APP_ID}-${userName}`, requestSettings);
+
+  checkStatus(response);
 };
 
-export const getUserStatistics = () => {
+export const getUserStatistics = async () => {
   const {userName} = store.getValues();
 
-  window.fetch(`https://es.dump.academy/pixel-hunter/stats/${APP_ID}-${userName}`)
-    .then(checkStatus)
-    .then((response) => response.json())
-    .then((data) => store.setValues({
-      gameResults: data
-    }));
+  const response = await fetch(`https://es.dump.academy/pixel-hunter/stats/${APP_ID}-${userName}`);
+  const responseData = await response.json();
+
+  store.setValues({
+    gameResults: responseData
+  });
 };
