@@ -17,17 +17,11 @@ class Greeting extends AbstractView {
           <li>Помни, главное — смотреть очень внимательно.</li>
         </ul>
       </div>
-      <button class="greeting__continue" type="button">
-        <span class="visually-hidden">Продолжить</span>
-        <svg class="icon" width="64" height="64" viewBox="0 0 64 64" fill="#000000">
-         <use xlink:href="img/sprite.svg#arrow-right"></use>
-        </svg>
-      </button>
     `;
   }
 
   bind(element) {
-    const nextButton = element.querySelector(`.greeting__continue`);
+    const nextButton = element.querySelector(`.greeting__asterisk`);
 
     nextButton.addEventListener(`click`, this.onClick);
   }
