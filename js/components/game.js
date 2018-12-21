@@ -45,13 +45,8 @@ class Game extends AbstractView {
       form.addEventListener(`click`, this.onSelectAnswer(form));
     }
 
-    const interval = setInterval(() => {
-      if (form.offsetWidth !== 0) {
-        this.resize(element);
+    this.resize(element);
 
-        clearInterval(interval);
-      }
-    }, 50);
   }
 
   resize() {
@@ -92,19 +87,26 @@ export default store.connect((...args) => {
 
     gameOptions.forEach((gameOption) => {
       const gameOptionImage = gameOption.querySelector(`img`);
-      const gameOptionSize = {
-        width: gameOption.clientWidth,
-        height: gameOption.clientHeight
-      };
-      const imageSize = {
-        width: gameOptionImage.width,
-        height: gameOptionImage.height
-      };
 
-      const newImageSize = resizeImage(gameOptionSize, imageSize);
+      const interval = setInterval(() => {
+        if (gameOption.offsetWidth !== 0 && gameOptionImage.offsetWidth !== 0) {
+          const gameOptionSize = {
+            width: gameOption.clientWidth,
+            height: gameOption.clientHeight
+          };
+          const imageSize = {
+            width: gameOptionImage.width,
+            height: gameOptionImage.height
+          };
 
-      gameOptionImage.style.setProperty(`width`, `${newImageSize.width}px`);
-      gameOptionImage.style.setProperty(`height`, `${newImageSize.height}px`);
+          const newImageSize = resizeImage(gameOptionSize, imageSize);
+
+          gameOptionImage.style.setProperty(`width`, `${newImageSize.width}px`);
+          gameOptionImage.style.setProperty(`height`, `${newImageSize.height}px`);
+
+          clearInterval(interval);
+        }
+      }, 50);
     });
   };
 

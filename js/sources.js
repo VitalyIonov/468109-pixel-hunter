@@ -40,9 +40,12 @@ export const getUserStatistics = async () => {
   const {userName} = store.getValues();
 
   const response = await fetch(`https://es.dump.academy/pixel-hunter/stats/${APP_ID}-${userName}`);
-  const responseData = await response.json();
 
-  store.setValues({
-    gameResults: responseData
-  });
+  if (response.ok) {
+    const responseData = await response.json();
+
+    store.setValues({
+      gameResults: responseData
+    });
+  }
 };
