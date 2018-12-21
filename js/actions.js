@@ -23,7 +23,7 @@ export const changeScreen = ({store, newScreen}) => {
 };
 
 export const changeTimer = ({store}) => {
-  const {elapsedTime} = store.getValues([`elapsedTime`]);
+  const {elapsedTime} = store.getValues([`elapsedTie`]);
 
   store.setValues({
     elapsedTime: getElapsedTime(elapsedTime)
