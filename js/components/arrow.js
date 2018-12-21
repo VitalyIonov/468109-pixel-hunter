@@ -30,11 +30,10 @@ export default (...args) => {
   view.onClick = () => {
     const {questions} = store.getValues();
 
-    store.reset({
-      ...initialValues,
+    store.reset(Object.assign(initialValues, {
       currentScreen: `greeting`,
       questions
-    });
+    }));
   };
 
   view.render({

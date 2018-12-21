@@ -47,13 +47,11 @@ export const getGameResult = (answers, lives) => {
   const {correct, fast, slow} = resultFromAnswers;
   const {livesResult} = resultFromLives;
 
-  return {
-    ...resultFromAnswers,
-    ...resultFromLives,
+  return Object.assign(resultFromAnswers, resultFromLives, {
     totalPoints: correct.points + fast.points + slow.points + livesResult.points,
     isWin: answers.length === 10 && lives >= 0,
     answers
-  };
+  });
 };
 
 export const livesCounter = (lastAnswer, lives) => {

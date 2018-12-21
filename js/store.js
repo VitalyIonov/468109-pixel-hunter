@@ -22,10 +22,7 @@ const store = {
   channels: [],
 
   setValues(newValues) {
-    values = {
-      ...values,
-      ...newValues
-    };
+    values = Object.assign(values, newValues);
 
     const keys = Object.keys(newValues);
 
@@ -44,10 +41,9 @@ const store = {
     return keys ?
       keys.reduce((result, key) => {
         if (values[key] !== undefined) {
-          return {
-            ...result,
+          return Object.assign(result, {
             [key]: values[key]
-          };
+          });
         }
 
         return result;
@@ -82,7 +78,9 @@ const store = {
       return;
     }
 
-    channel.forEach((listener) => listener({store: this, ...data}));
+    channel.forEach((listener) => listener(Object.assign({
+      store: this
+    }, data)));
   },
 
   connect(component, keys) {

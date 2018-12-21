@@ -69,10 +69,9 @@ const getCorrectAnswer = (answers) => {
 export const formatQuestionsToClient = (questions) => {
   return questions.map((question) => {
     if (question.type === QuestionTypes.ONE_OF_THREE) {
-      return {
-        ...question,
+      return Object.assign(question, {
         correctAnswer: getCorrectAnswer(question.answers)
-      };
+      });
     }
 
     return question;

@@ -7,16 +7,9 @@ export const changeScreen = ({store, newScreen}) => {
   };
 
   if (newScreen === `game`) {
-    updatedValues = {
-      ...updatedValues,
+    updatedValues = Object.assign(updatedValues, {
       timerState: `runs`
-    };
-  }
-
-  if (newScreen === `stats`) {
-    updatedValues = {
-      ...updatedValues,
-    };
+    });
   }
 
   store.setValues(updatedValues);
@@ -49,10 +42,9 @@ export const nextStage = ({store}) => {
 export const onAnswer = ({store, answer}) => {
   const {lives, answers, elapsedTime, gameResults, userName} = store.getValues();
 
-  const updatedAnswer = {
-    ...answer,
+  const updatedAnswer = Object.assign(answer, {
     elapsedTime
-  };
+  });
 
   const newLives = livesCounter(updatedAnswer, lives);
   const newAnswers = [...answers, updatedAnswer];
@@ -72,10 +64,9 @@ export const onAnswer = ({store, answer}) => {
       isEndGame
     };
 
-  store.setValues({
+  store.setValues(Object.assign({
     answers: newAnswers,
     lives: newLives,
     elapsedTime: 0,
-    ...additionalValues
-  });
+  }, additionalValues));
 };
