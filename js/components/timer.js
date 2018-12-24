@@ -1,5 +1,5 @@
 import store from '../store';
-import {Time} from '../constants/initialOptions';
+import {Time} from '../constants/initial-options';
 
 import AbstractView from '../abstract-view';
 
@@ -7,11 +7,11 @@ class Timer extends AbstractView {
   constructor(state) {
     super();
 
-    this.state = state;
+    this._state = state;
   }
 
   get template() {
-    const {elapsedTime} = this.state;
+    const {elapsedTime} = this._state;
 
     return `
       ${Time.ROUND - elapsedTime}
@@ -21,7 +21,7 @@ class Timer extends AbstractView {
   render(nodeOptions) {
     super.render(nodeOptions);
 
-    const {elapsedTime, timerState, timerId} = this.state;
+    const {elapsedTime, timerState, timerId} = this._state;
 
     this.onTimerStep(elapsedTime, timerState, timerId);
   }

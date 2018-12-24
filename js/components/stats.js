@@ -1,8 +1,8 @@
 import {render} from '../utils/render';
 import store from '../store';
-import marks from './marks';
+import marks from './render-marks';
 
-import {Points} from '../constants/initialOptions';
+import {Points} from '../constants/initial-options';
 
 import AbstractView from '../abstract-view';
 import Arrow from './arrow';
@@ -11,11 +11,11 @@ class Stats extends AbstractView {
   constructor(state) {
     super();
 
-    this.state = state;
+    this._state = state;
   }
 
   get template() {
-    const {gameResults} = this.state;
+    const {gameResults} = this._state;
 
     return gameResults.map((result, index) => {
       const {correct, fast, slow, livesResult, totalPoints, isWin, answers} = result;

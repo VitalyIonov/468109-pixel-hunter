@@ -1,6 +1,6 @@
 import store from './store';
 import {checkStatus, formatQuestionsToClient} from './utils/main';
-import {APP_ID, SERVER_URL} from './constants/main';
+import {APP_ID, SERVER_URL} from './constants/game-options';
 
 export const getQuestions = async () => {
   try {

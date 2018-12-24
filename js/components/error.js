@@ -6,11 +6,11 @@ class ErrorScreen extends AbstractView {
   constructor(state) {
     super();
 
-    this.state = state;
+    this._state = state;
   }
 
   get template() {
-    const {error} = this.state;
+    const {error} = this._state;
 
     return `
       <div class="end">

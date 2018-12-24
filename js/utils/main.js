@@ -1,5 +1,5 @@
-import {Time} from "../constants/initialOptions";
-import {QuestionTypes} from '../constants/main';
+import {Time} from "../constants/initial-options";
+import {QuestionType} from '../constants/game-options';
 
 export const checkIsAllAnswersAreGiven = (form, answers) => answers.every((answer, index) => {
   const answerId = index + 1;
@@ -18,11 +18,11 @@ export const getMarkModifier = (isCorrect, elapsedTime) => {
     return `wrong`;
   }
 
-  if (elapsedTime < Time.IS_FAST) {
+  if (elapsedTime < Time.FAST) {
     return `fast`;
   }
 
-  if (elapsedTime >= Time.IS_SLOW) {
+  if (elapsedTime > Time.SLOW) {
     return `slow`;
   }
 
@@ -30,11 +30,11 @@ export const getMarkModifier = (isCorrect, elapsedTime) => {
 };
 
 export const getGameScreenModifyer = (question) => {
-  if (question && question.type === QuestionTypes.TINDER_LIKE) {
+  if (question && question.type === QuestionType.TINDER_LIKE) {
     return `game__content--wide`;
   }
 
-  if (question && question.type === QuestionTypes.ONE_OF_THREE) {
+  if (question && question.type === QuestionType.ONE_OF_THREE) {
     return `game__content--tripple`;
   }
 
@@ -44,9 +44,9 @@ export const getGameScreenModifyer = (question) => {
 export const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
   }
+
+  throw new Error(`${response.status}: ${response.statusText}`);
 };
 
 const getCorrectAnswer = (answers) => {
@@ -68,7 +68,7 @@ const getCorrectAnswer = (answers) => {
 
 export const formatQuestionsToClient = (questions) => {
   return questions.map((question) => {
-    if (question.type === QuestionTypes.ONE_OF_THREE) {
+    if (question.type === QuestionType.ONE_OF_THREE) {
       return Object.assign(question, {
         correctAnswer: getCorrectAnswer(question.answers)
       });

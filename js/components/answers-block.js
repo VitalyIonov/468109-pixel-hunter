@@ -1,4 +1,4 @@
-import {QuestionTypes, AnswerTypes} from '../constants/main';
+import {QuestionType, AnswerType} from '../constants/game-options';
 
 const answersBlock = (question) => {
   const {answers, type} = question;
@@ -12,12 +12,12 @@ const answersBlock = (question) => {
     return `
       <div class="game__option">
       <img src=${url} alt="Option ${answerId}" data-value=${answerType}>
-      ${type !== QuestionTypes.ONE_OF_THREE ? `<label class="game__answer game__answer--photo">
-        <input class="visually-hidden" name="answer${answerId}" type="radio" value=${AnswerTypes.PHOTO}>
+      ${type !== QuestionType.ONE_OF_THREE ? `<label class="game__answer game__answer--photo">
+        <input class="visually-hidden" name="answer${answerId}" type="radio" value=${AnswerType.PHOTO}>
         <span>Фото</span>
       </label>
       <label class="game__answer game__answer--paint">
-        <input class="visually-hidden" name="answer${answerId}" type="radio" value=${AnswerTypes.PAINTING}>
+        <input class="visually-hidden" name="answer${answerId}" type="radio" value=${AnswerType.PAINTING}>
         <span>Рисунок</span>
       </label>` : null}
       </div>

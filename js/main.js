@@ -12,7 +12,7 @@ import Rules from './components/rules';
 import Game from './components/game';
 import Stats from './components/stats';
 
-const screens = {
+const Screens = {
   splash: SplashScreen,
   error: ErrorScreen,
   intro: Intro,
@@ -29,7 +29,7 @@ const App = ({currentScreen}) => {
     nodeName: `section`,
     id: `app`,
     className: `central`,
-    elements: [screens[currentScreen]],
+    elements: [Screens[currentScreen]],
     isRerender: true
   });
 };

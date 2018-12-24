@@ -1,5 +1,5 @@
 import store from '../store';
-import marks from './marks';
+import marks from './render-marks';
 import answersBlock from './answers-block';
 import {render} from '../utils/render';
 
@@ -8,18 +8,18 @@ import Arrow from './arrow';
 import Timer from './timer';
 import Lives from './lives';
 
-import {QuestionTypes} from '../constants/main';
+import {QuestionType} from '../constants/game-options';
 import {checkIsAllAnswersAreGiven, checkIsCorrectAnswer, getGameScreenModifyer, resizeImage} from '../utils/main';
 
 class Game extends AbstractView {
   constructor(state) {
     super();
 
-    this.state = state;
+    this._state = state;
   }
 
   get template() {
-    const {answers, questions} = this.state;
+    const {answers, questions} = this._state;
 
     this.question = questions[answers.length];
 
@@ -37,11 +37,11 @@ class Game extends AbstractView {
   bind(element) {
     const form = element.querySelector(`.game__content`);
 
-    if (this.question && this.question.type !== QuestionTypes.ONE_OF_THREE) {
+    if (this.question && this.question.type !== QuestionType.ONE_OF_THREE) {
       form.addEventListener(`change`, this.onSelectAnswer(form));
     }
 
-    if (this.question && this.question.type === QuestionTypes.ONE_OF_THREE) {
+    if (this.question && this.question.type === QuestionType.ONE_OF_THREE) {
       form.addEventListener(`click`, this.onSelectAnswer(form));
     }
 
@@ -67,7 +67,7 @@ export default store.connect((...args) => {
     let isAllAnswersAreGiven;
     let isCorrect;
 
-    if (type === QuestionTypes.ONE_OF_THREE) {
+    if (type === QuestionType.ONE_OF_THREE) {
       isAllAnswersAreGiven = !!event.target.dataset.value;
       isCorrect = event.target.dataset.value === correctAnswer;
     } else {

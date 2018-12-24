@@ -1,5 +1,5 @@
 import store from '../store';
-import {LIVE_COUNT} from '../constants/initialOptions';
+import {LIVE_COUNT} from '../constants/initial-options';
 
 import AbstractView from '../abstract-view';
 
@@ -7,11 +7,11 @@ class Lives extends AbstractView {
   constructor(state) {
     super();
 
-    this.state = state;
+    this._state = state;
   }
 
   get template() {
-    const {lives} = this.state;
+    const {lives} = this._state;
 
     if (lives < 0) {
       return null;

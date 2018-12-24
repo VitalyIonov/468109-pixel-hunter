@@ -9,6 +9,6 @@ export const LIVE_COUNT = 3;
 
 export const Time = {
   ROUND: 30,
-  IS_FAST: 10,
-  IS_SLOW: 20
+  FAST: 10,
+  SLOW: 20
 };

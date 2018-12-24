@@ -1,4 +1,4 @@
-import {Time} from './constants/initialOptions';
+import {Time} from './constants/initial-options';
 
 export const initialValues = {
   userName: ``,

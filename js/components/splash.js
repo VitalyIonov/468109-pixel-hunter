@@ -6,8 +6,8 @@ class SplashScreen extends AbstractView {
   constructor() {
     super();
 
-    this.cursor = 0;
-    this.symbolsSeq = `/—\\|`;
+    this._cursor = 0;
+    this._symbolsSeq = `/—\\|`;
   }
 
   get template() {
@@ -15,13 +15,13 @@ class SplashScreen extends AbstractView {
   }
 
   start() {
-    this.cursor = ++this.cursor >= this.symbolsSeq.length ? 0 : this.cursor;
-    this.element.textContent = this.symbolsSeq[this.cursor];
-    this.timeout = setTimeout(() => this.start(), 50);
+    this._cursor = ++this._cursor >= this._symbolsSeq.length ? 0 : this._cursor;
+    this.element.textContent = this._symbolsSeq[this.cursor];
+    this._timeout = setTimeout(() => this.start(), 50);
   }
 
   stop() {
-    clearTimeout(this.timeout);
+    clearTimeout(this._timeout);
   }
 }
 
