@@ -61,15 +61,15 @@ class Game extends AbstractView {
 export default store.connect((...args) => {
   const view = new Game(...args);
 
-  view.onSelectAnswer = (form) => (event) => {
+  view.onSelectAnswer = (form) => (evt) => {
     const {answers, type, correctAnswer} = view.question;
 
     let isAllAnswersAreGiven;
     let isCorrect;
 
     if (type === QuestionType.ONE_OF_THREE) {
-      isAllAnswersAreGiven = !!event.target.dataset.value;
-      isCorrect = event.target.dataset.value === correctAnswer;
+      isAllAnswersAreGiven = !!evt.target.dataset.value;
+      isCorrect = evt.target.dataset.value === correctAnswer;
     } else {
       isAllAnswersAreGiven = checkIsAllAnswersAreGiven(form, answers);
       isCorrect = checkIsCorrectAnswer(form, answers);

@@ -32,7 +32,7 @@ class Stats extends AbstractView {
           <td class="result__total">${correct.points}</td>` : `<td class="result__total"></td>
           <td class="result__total  result__total--final">fail</td>`}
         </tr>
-        ${isWin ? `<tr>
+        <tr>
           <td></td>
           <td class="result__extra">Бонус за скорость:</td>
           <td class="result__extra">${fast.count} <span class="stats__result stats__result--fast"></span></td>
@@ -55,7 +55,7 @@ class Stats extends AbstractView {
         </tr>
         <tr>
           <td colspan="5" class="result__total  result__total--final">${totalPoints}</td>
-        </tr>` : ``}
+        </tr>
       </table>
     `;
     }).join(``);
